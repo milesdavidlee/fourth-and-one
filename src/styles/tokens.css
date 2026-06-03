@@ -1,0 +1,95 @@
+:root {
+  /* surfaces */
+  --surface-canvas: #020308;
+  --surface-raised: #0B0C12;
+  --surface-overlay: #12131A;
+  --surface-line: #22232A;
+
+  /* text — hierarchy via opacity-on-white, not grey ramps. Reads white. */
+  --text-primary: #FFFFFF;
+  --text-secondary: rgba(255, 255, 255, 0.82);
+  --text-tertiary: rgba(255, 255, 255, 0.58);
+  --text-quaternary: rgba(255, 255, 255, 0.32);
+
+  /* accent — Apple system blue, with teal/cyan extensions for the electric gradient */
+  --accent: #0A84FF;
+  --accent-hover: #2E9DFF;
+  --accent-muted: #0552A8;
+  --accent-teal: #5AC8FA;
+  --accent-electric: #7DD3FC;
+  --accent-glow: rgba(10, 132, 255, 0.28);
+  --accent-glow-teal: rgba(90, 200, 250, 0.32);
+  --focus-ring: rgba(10, 132, 255, 0.65);
+
+  /* gradients — composable surfaces */
+  --accent-gradient: linear-gradient(135deg, var(--accent) 0%, var(--accent-teal) 100%);
+  --accent-gradient-electric: linear-gradient(135deg, var(--accent) 0%, var(--accent-teal) 55%, var(--accent-electric) 100%);
+  --accent-gradient-vertical: linear-gradient(180deg, var(--accent) 0%, var(--accent-teal) 100%);
+
+  /* depth — cool ambient tones used in shader + background washes (formerly --bronze-*) */
+  --depth-deep: #0C1726;
+  --depth-warm: #1A2540;
+
+  /* functional */
+  --success: #30D158;
+  --danger: #FF453A;
+
+  /* spacing */
+  --space-2: 2px;   --space-4: 4px;   --space-8: 8px;   --space-12: 12px;
+  --space-16: 16px; --space-20: 20px; --space-24: 24px; --space-32: 32px;
+  --space-40: 40px; --space-48: 48px; --space-64: 64px; --space-80: 80px;
+  --space-96: 96px; --space-120: 120px; --space-160: 160px;
+  --space-200: 200px; --space-240: 240px;
+
+  /* radius */
+  --radius-s: 6px; --radius-m: 12px; --radius-l: 20px;
+  --radius-xl: 32px; --radius-pill: 999px;
+
+  /* elevation (rare; hover/floating only) */
+  --elev-1: 0 1px 0 0 rgba(255,255,255,0.04) inset, 0 8px 24px rgba(0,0,0,0.32);
+  --elev-2: 0 1px 0 0 rgba(255,255,255,0.06) inset, 0 24px 64px rgba(0,0,0,0.48);
+
+  /* motion */
+  --dur-fast: 0.2s;
+  --dur-base: 0.4s;
+  --dur-entrance: 0.8s;
+  --dur-headline: 0.9s;
+  --dur-count: 1.6s;
+  --dur-ambient: 1.2s;
+  --dur-loader: 1.5s;
+
+  /* easings — GSAP string tokens, read via getPropertyValue() in TS */
+  --ease-out: power3.out;
+  --ease-inout: power2.inOut;
+  --ease-emphatic: expo.out;
+  --ease-linear: none;
+
+  /* type scale — bigger displays + tighter line-heights for editorial weight.
+     Body line-heights opened up slightly for reading comfort. */
+  --type-display-xl-size: 96px;  --type-display-xl-lh: 100px; --type-display-xl-tracking: -0.045em; --type-display-xl-weight: 600;
+  --type-display-l-size: 72px;   --type-display-l-lh: 76px;   --type-display-l-tracking: -0.04em;   --type-display-l-weight: 600;
+  --type-display-m-size: 52px;   --type-display-m-lh: 58px;   --type-display-m-tracking: -0.032em;  --type-display-m-weight: 600;
+  --type-display-s-size: 36px;   --type-display-s-lh: 42px;   --type-display-s-tracking: -0.025em;  --type-display-s-weight: 600;
+  --type-headline-size: 26px;    --type-headline-lh: 32px;    --type-headline-tracking: -0.018em;   --type-headline-weight: 600;
+  --type-title-size: 20px;       --type-title-lh: 28px;       --type-title-tracking: -0.01em;       --type-title-weight: 500;
+  --type-body-l-size: 19px;      --type-body-l-lh: 30px;      --type-body-l-tracking: 0;            --type-body-l-weight: 400;
+  --type-body-size: 16px;        --type-body-lh: 28px;        --type-body-tracking: 0;              --type-body-weight: 400;
+  --type-body-s-size: 14px;      --type-body-s-lh: 22px;      --type-body-s-tracking: 0;            --type-body-s-weight: 400;
+  --type-meta-size: 12px;        --type-meta-lh: 18px;        --type-meta-tracking: 0.04em;         --type-meta-weight: 500;
+  --type-numeral-size: 128px;    --type-numeral-lh: 116px;    --type-numeral-tracking: -0.045em;    --type-numeral-weight: 500;
+
+  /* fonts */
+  --font-display: -apple-system, 'SF Pro Display', 'Inter Tight Variable', 'Inter Display', system-ui, sans-serif;
+  --font-text: -apple-system, 'SF Pro Text', 'Inter Variable', 'Inter', system-ui, sans-serif;
+
+  /* containers */
+  --container: 1200px;
+  --container-wide: 1440px;
+  --container-read: 680px;
+
+  /* z-index layers */
+  --z-base: 0;
+  --z-nav: 10;
+  --z-overlay: 100;
+  --z-loader: 1000;
+}

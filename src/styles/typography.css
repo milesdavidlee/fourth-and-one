@@ -1,0 +1,153 @@
+.type-display-xl {
+  font-family: var(--font-display);
+  font-size: var(--type-display-xl-size);
+  line-height: var(--type-display-xl-lh);
+  letter-spacing: var(--type-display-xl-tracking);
+  font-weight: var(--type-display-xl-weight);
+}
+.type-display-l {
+  font-family: var(--font-display);
+  font-size: var(--type-display-l-size);
+  line-height: var(--type-display-l-lh);
+  letter-spacing: var(--type-display-l-tracking);
+  font-weight: var(--type-display-l-weight);
+}
+.type-display-m {
+  font-family: var(--font-display);
+  font-size: var(--type-display-m-size);
+  line-height: var(--type-display-m-lh);
+  letter-spacing: var(--type-display-m-tracking);
+  font-weight: var(--type-display-m-weight);
+}
+.type-display-s {
+  font-family: var(--font-display);
+  font-size: var(--type-display-s-size);
+  line-height: var(--type-display-s-lh);
+  letter-spacing: var(--type-display-s-tracking);
+  font-weight: var(--type-display-s-weight);
+}
+.type-headline {
+  font-family: var(--font-display);
+  font-size: var(--type-headline-size);
+  line-height: var(--type-headline-lh);
+  letter-spacing: var(--type-headline-tracking);
+  font-weight: var(--type-headline-weight);
+}
+.type-title {
+  font-family: var(--font-display);
+  font-size: var(--type-title-size);
+  line-height: var(--type-title-lh);
+  letter-spacing: var(--type-title-tracking);
+  font-weight: var(--type-title-weight);
+}
+.type-body-l {
+  font-family: var(--font-text);
+  font-size: var(--type-body-l-size);
+  line-height: var(--type-body-l-lh);
+  letter-spacing: var(--type-body-l-tracking);
+  font-weight: var(--type-body-l-weight);
+}
+.type-body {
+  font-family: var(--font-text);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-lh);
+  letter-spacing: var(--type-body-tracking);
+  font-weight: var(--type-body-weight);
+}
+.type-body-s {
+  font-family: var(--font-text);
+  font-size: var(--type-body-s-size);
+  line-height: var(--type-body-s-lh);
+  letter-spacing: var(--type-body-s-tracking);
+  font-weight: var(--type-body-s-weight);
+}
+.type-meta {
+  font-family: var(--font-text);
+  font-size: var(--type-meta-size);
+  line-height: var(--type-meta-lh);
+  letter-spacing: var(--type-meta-tracking);
+  font-weight: var(--type-meta-weight);
+  text-transform: uppercase;
+}
+.type-numeral {
+  font-family: var(--font-display);
+  font-size: var(--type-numeral-size);
+  line-height: var(--type-numeral-lh);
+  letter-spacing: var(--type-numeral-tracking);
+  font-weight: var(--type-numeral-weight);
+  font-feature-settings: 'tnum';
+}
+
+/* Section eyebrow — shared treatment used at the top of major sections. */
+.eyebrow {
+  font-family: var(--font-text);
+  font-size: var(--type-meta-size);
+  line-height: var(--type-meta-lh);
+  letter-spacing: var(--type-meta-tracking);
+  font-weight: var(--type-meta-weight);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-12);
+}
+.eyebrow::before {
+  content: '';
+  width: var(--space-32);
+  height: 1px;
+  background: var(--accent-gradient);
+}
+
+/* mobile shift — display sizes drop one step at ≤ 768px (per DS §2) */
+@media (max-width: 768px) {
+  .type-display-xl {
+    font-size: var(--type-display-l-size);
+    line-height: var(--type-display-l-lh);
+    letter-spacing: var(--type-display-l-tracking);
+  }
+  .type-display-l {
+    font-size: var(--type-display-m-size);
+    line-height: var(--type-display-m-lh);
+    letter-spacing: var(--type-display-m-tracking);
+  }
+  .type-display-m {
+    font-size: var(--type-display-s-size);
+    line-height: var(--type-display-s-lh);
+    letter-spacing: var(--type-display-s-tracking);
+  }
+}
+
+/* Chapter mark — "01 / Approach". Single-line section label, Apple-grade.
+   Number is bright/tabular, slash dims, label takes the same uppercase
+   tracking. Centered to --container so every section's chapter aligns. */
+.chapter {
+  display: block;
+  font-family: var(--font-text);
+  font-size: var(--type-meta-size);
+  line-height: 1;
+  letter-spacing: 0.10em;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  font-feature-settings: 'tnum';
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  max-width: var(--container);
+  margin: 0 auto var(--space-64);
+  padding-inline: var(--space-48);
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .chapter {
+    margin-bottom: var(--space-32);
+    padding-inline: var(--space-24);
+    letter-spacing: 0.08em;
+  }
+}
+
+@media (max-width: 480px) {
+  .chapter {
+    padding-inline: var(--space-20);
+  }
+}

@@ -1,0 +1,104 @@
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-nav);
+  padding: var(--space-16) var(--space-48);
+  background: rgba(10, 10, 11, 0);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  transform: translateY(0);
+  transition:
+    transform var(--dur-base) ease,
+    background-color var(--dur-base) ease,
+    backdrop-filter var(--dur-base) ease,
+    -webkit-backdrop-filter var(--dur-base) ease;
+  will-change: transform;
+}
+
+.nav[data-hidden='true'] {
+  transform: translateY(-110%);
+}
+
+.nav[data-scrolled='true'] {
+  background: rgba(10, 10, 11, 0.72);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+}
+
+.nav__inner {
+  max-width: var(--container);
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-32);
+}
+
+.nav__brand {
+  font-family: var(--font-display);
+  font-size: var(--type-headline-size);
+  line-height: var(--type-headline-lh);
+  letter-spacing: var(--type-headline-tracking);
+  font-weight: var(--type-headline-weight);
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav__links {
+  display: flex;
+  gap: var(--space-32);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav__link {
+  font-family: var(--font-text);
+  font-size: var(--type-body-s-size);
+  line-height: var(--type-body-s-lh);
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: color var(--dur-fast) ease;
+}
+
+.nav__link:hover {
+  color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+  .nav {
+    padding: var(--space-12) var(--space-24);
+  }
+  .nav__links {
+    gap: var(--space-20);
+  }
+  .nav__brand {
+    font-size: var(--type-title-size);
+    line-height: var(--type-title-lh);
+  }
+}
+
+/* Small phones — tighten everything so brand + 4 links fit at 360-414px. */
+@media (max-width: 480px) {
+  .nav {
+    padding: var(--space-12) var(--space-16);
+  }
+  .nav__inner {
+    gap: var(--space-16);
+  }
+  .nav__brand {
+    font-size: var(--type-body-l-size);
+    line-height: 1;
+  }
+  .nav__links {
+    gap: var(--space-12);
+  }
+  .nav__link {
+    font-size: var(--type-body-s-size);
+  }
+}

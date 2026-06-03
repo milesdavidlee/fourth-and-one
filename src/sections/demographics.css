@@ -1,0 +1,104 @@
+.demographics {
+  position: relative;
+  padding: var(--space-160) var(--space-48);
+  background: transparent;
+}
+
+.demographics__eyebrow {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  max-width: var(--container);
+  margin: 0 auto var(--space-96);
+}
+
+.demographics__inner {
+  position: relative;
+  z-index: 1;
+  max-width: var(--container-read);
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-32);
+  align-items: center;
+  justify-items: center;
+}
+
+.demographics__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-24);
+  padding: var(--space-64) var(--space-48);
+}
+
+.demographics__numeral {
+  font-family: var(--font-display);
+  font-size: 160px;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  font-weight: 500;
+  background: var(--accent-gradient-electric);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  font-feature-settings: 'tnum';
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  filter: drop-shadow(0 8px 32px var(--accent-glow));
+}
+
+.demographics__label {
+  font-family: var(--font-text);
+  font-size: var(--type-body-l-size);
+  line-height: var(--type-body-l-lh);
+  letter-spacing: var(--type-body-l-tracking);
+  font-weight: var(--type-body-l-weight);
+  color: var(--text-secondary);
+  max-width: 48ch;
+}
+
+@media (max-width: 1199px) {
+  .demographics__numeral {
+    font-size: 120px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .demographics__numeral {
+    font-size: 96px;
+  }
+}
+
+@media (max-width: 768px) {
+  .demographics {
+    padding: var(--space-96) var(--space-24);
+  }
+  .demographics__eyebrow {
+    margin-bottom: var(--space-48);
+  }
+  .demographics__inner {
+    gap: var(--space-20);
+  }
+  .demographics__stat {
+    padding: var(--space-40) var(--space-24);
+  }
+  .demographics__numeral {
+    font-size: 88px;
+  }
+}
+
+@media (max-width: 480px) {
+  .demographics {
+    padding: var(--space-64) var(--space-20);
+  }
+  .demographics__stat {
+    padding: var(--space-32) var(--space-20);
+  }
+  .demographics__numeral {
+    font-size: 64px;
+    letter-spacing: -0.035em;
+  }
+}

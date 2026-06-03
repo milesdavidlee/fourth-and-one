@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#020308" />
+    <title>4th &amp; 1 Ventures — Venture powered by athlete access</title>
+    <meta name="description" content="Venture powered by athlete access. 4th &amp; 1 Ventures invests in consumer brands and consumer tech companies Seed to Series B." />
+
+    <!--
+      Critical CSS — inlined to prevent FOUC. The JS bundle is what imports
+      all our stylesheets, so without these rules the browser would render
+      raw HTML for a beat before main.ts loads. Just enough here to keep
+      the loader covering everything until the real loader.css takes over.
+    -->
+    <style>
+      html, body {
+        margin: 0;
+        background: #020308;
+        color: #fff;
+        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+        min-height: 100dvh;
+        overflow-x: hidden;
+      }
+      #loader {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        display: grid;
+        place-items: center;
+        background: #020308;
+      }
+      #loader .loader__wordmark {
+        font-size: 52px;
+        font-weight: 600;
+        letter-spacing: -0.032em;
+        color: #FFFFFF;
+        white-space: nowrap;
+      }
+      /* The loader covers the page (z-index 1000) until it fades out, so
+         <main> can render freely behind it from the start. No visibility
+         gate — if anything ever stops the loader from running, the page
+         is still reachable. */
+    </style>
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,300,0,0"
+    />
+
+    <script type="module" src="/src/main.ts"></script>
+  </head>
+  <body>
+    <div id="loader" class="loader" aria-hidden="true" data-state="active">
+      <span class="loader__wordmark" role="img" aria-label="4th &amp; 1 Ventures">4th &amp; 1 Ventures</span>
+    </div>
+
+    <canvas id="football-canvas" class="football-canvas" aria-hidden="true"></canvas>
+
+    <header id="nav" class="nav" aria-label="Primary">
+      <div class="nav__inner">
+        <a class="nav__brand" href="#hero" aria-label="4th &amp; 1 Ventures — home">4th &amp; 1</a>
+        <ul class="nav__links">
+          <li><a class="nav__link" href="#approach">Approach</a></li>
+          <li><a class="nav__link" href="#portfolio">Portfolio</a></li>
+          <li><a class="nav__link" href="#team">Team</a></li>
+          <li><a class="nav__link" href="#connect">Connect</a></li>
+        </ul>
+      </div>
+    </header>
+
+    <main id="app">
+      <section id="hero" class="hero" aria-labelledby="hero-tagline">
+
+        <div class="hero__inner">
+          <span class="hero__mark" aria-hidden="true">
+            <span class="hero__mark-dot"></span>
+            <span class="hero__mark-rule"></span>
+            <span class="hero__mark-label">Capital for the extra inches</span>
+          </span>
+
+          <aside class="hero__stats card-surface" aria-label="At a glance">
+            <div class="hero__stat">
+              <span class="hero__stat-numeral">100<span class="hero__stat-suffix">+</span></span>
+              <span class="hero__stat-label">Pro Athletes</span>
+            </div>
+            <div class="hero__stat">
+              <span class="hero__stat-numeral">20<span class="hero__stat-suffix">+</span></span>
+              <span class="hero__stat-label">US States</span>
+            </div>
+            <div class="hero__stat">
+              <span class="hero__stat-numeral">5</span>
+              <span class="hero__stat-label">Pro Sports</span>
+            </div>
+          </aside>
+
+          <h1 id="hero-tagline" class="hero__tagline" data-split>
+            Venture powered by athlete access.
+          </h1>
+
+          <a class="cta hero__cta" href="#approach" data-cta>
+            <span class="hero__cta-label">Learn more</span>
+            <span class="icon" aria-hidden="true">arrow_forward</span>
+          </a>
+        </div>
+      </section>
+
+      <section id="approach" class="approach" aria-labelledby="approach-headline">
+        <span class="chapter approach__chapter">01 / Approach</span>
+        <div class="approach__inner">
+          <h2 id="approach-headline" class="approach__headline">
+            Leveraging the power of athletes to impact consumer brands.
+          </h2>
+          <div class="approach__body">
+            <p class="approach__lead">
+              We invest in consumer brands and consumer tech companies Seed to Series B.
+            </p>
+            <p class="approach__paragraph">
+              4th &amp; 1 Ventures is a venture syndicate group that harnesses the influence and investment of top athletes, entertainers, and influencers along with the experience of seasoned business executives. With our expertise and extensive network, we serve as a trusted resource to our portfolio companies to open up doors and opportunities.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="investment-approach" class="investment-approach" aria-labelledby="investment-approach-headline">
+        <span class="chapter investment-approach__chapter">02 / Investment Approach</span>
+        <div class="investment-approach__inner">
+          <h2 id="investment-approach-headline" class="investment-approach__headline">
+            Unique approach to Investment
+          </h2>
+          <div class="investment-approach__body">
+            <p class="investment-approach__paragraph">
+              After the selected founders have undergone our extensive due diligence process, we invite the company to our quarterly virtual Shark Tank, where the team has the opportunity to pitch in real time to 4th &amp; 1 investors.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="demographics" class="demographics" aria-label="Member demographics">
+        <span class="chapter demographics__chapter">03 / Membership</span>
+        <div class="demographics__inner">
+          <div class="demographics__stat card-surface">
+            <span class="demographics__numeral" data-count="200" data-suffix="+">200+</span>
+            <span class="demographics__label">Investors comprised of professional athletes, entertainers, influencers, and business executives.</span>
+          </div>
+        </div>
+      </section>
+
+      <!--
+        Portfolio: image URLs migrated from cdn.prod.website-files.com on
+        4thand1ventures.com/portfolio. Migrate to local assets before launch.
+      -->
+      <section id="portfolio" class="portfolio" aria-label="Portfolio">
+        <span class="chapter portfolio__chapter">04 / Portfolio</span>
+        <div class="portfolio__inner">
+          <ul class="portfolio__grid">
+            <li>
+              <a class="portfolio__card" href="https://slatemilk.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit Slate Milk">
+                <div class="portfolio__media">
+                  <img
+                    class="portfolio__img"
+                    src="https://cdn.prod.website-files.com/642d96b49157186427784cd0/64931cca0c1bde0d58a6e20f_hero-dark-pour-v3-v011-cut-for_web-sm_2048x_ad8dc7f4-32f7-483b-b06c-ba0c6786a49f_2048x.webp"
+                    alt="Slate Milk"
+                    loading="lazy"
+                    width="1600"
+                    height="1000"
+                  />
+                  <span class="portfolio__overlay" aria-hidden="true"></span>
+                </div>
+                <div class="portfolio__text">
+                  <h3 class="portfolio__name">Slate Milk</h3>
+                  <span class="portfolio__meta">
+                    slatemilk.com
+                    <span class="icon portfolio__arrow" aria-hidden="true">arrow_outward</span>
+                  </span>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a class="portfolio__card" href="https://www.jambys.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit Jambys">
+                <div class="portfolio__media">
+                  <img
+                    class="portfolio__img"
+                    src="https://cdn.prod.website-files.com/642d96b49157186427784cd0/6609ec1e318bdc118bffc394_Jambys.webp"
+                    alt="Jambys"
+                    loading="lazy"
+                    width="1600"
+                    height="1000"
+                  />
+                  <span class="portfolio__overlay" aria-hidden="true"></span>
+                </div>
+                <div class="portfolio__text">
+                  <h3 class="portfolio__name">Jambys</h3>
+                  <span class="portfolio__meta">
+                    jambys.com
+                    <span class="icon portfolio__arrow" aria-hidden="true">arrow_outward</span>
+                  </span>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a class="portfolio__card" href="https://eatdrumroll.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit Drumroll Snacks">
+                <div class="portfolio__media">
+                  <img
+                    class="portfolio__img"
+                    src="https://cdn.prod.website-files.com/642d96b49157186427784cd0/663ab9d19699e17ec6a3c69b_gander_drumroll_cs_3%402x-scaled.jpg"
+                    alt="Drumroll Snacks"
+                    loading="lazy"
+                    width="1600"
+                    height="1000"
+                  />
+                  <span class="portfolio__overlay" aria-hidden="true"></span>
+                </div>
+                <div class="portfolio__text">
+                  <h3 class="portfolio__name">Drumroll Snacks</h3>
+                  <span class="portfolio__meta">
+                    eatdrumroll.com
+                    <span class="icon portfolio__arrow" aria-hidden="true">arrow_outward</span>
+                  </span>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a class="portfolio__card" href="https://trynowadays.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit Nowadays">
+                <div class="portfolio__media">
+                  <img
+                    class="portfolio__img"
+                    src="https://cdn.prod.website-files.com/642d96b49157186427784cd0/67b3c0c4851cd526630840d9_Screenshot%202025-02-17%20170518.png"
+                    alt="Nowadays"
+                    loading="lazy"
+                    width="1600"
+                    height="1000"
+                  />
+                  <span class="portfolio__overlay" aria-hidden="true"></span>
+                </div>
+                <div class="portfolio__text">
+                  <h3 class="portfolio__name">Nowadays</h3>
+                  <span class="portfolio__meta">
+                    trynowadays.com
+                    <span class="icon portfolio__arrow" aria-hidden="true">arrow_outward</span>
+                  </span>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a class="portfolio__card" href="https://liquiddeath.com" target="_blank" rel="noopener noreferrer" aria-label="Visit Liquid Death">
+                <div class="portfolio__media">
+                  <img
+                    class="portfolio__img"
+                    src="https://cdn.prod.website-files.com/642d96b49157186427784cd0/685c17e01d049df62a173c2f_ld2.jpeg"
+                    alt="Liquid Death"
+                    loading="lazy"
+                    width="1600"
+                    height="1000"
+                  />
+                  <span class="portfolio__overlay" aria-hidden="true"></span>
+                </div>
+                <div class="portfolio__text">
+                  <h3 class="portfolio__name">Liquid Death</h3>
+                  <span class="portfolio__meta">
+                    liquiddeath.com
+                    <span class="icon portfolio__arrow" aria-hidden="true">arrow_outward</span>
+                  </span>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a class="portfolio__card" href="https://masachips.com" target="_blank" rel="noopener noreferrer" aria-label="Visit Masa Chips">
+                <div class="portfolio__media">
+                  <img
+                    class="portfolio__img"
+                    src="/portfolio/masa-chips.webp"
+                    alt="Masa Chips"
+                    loading="lazy"
+                    width="1600"
+                    height="1000"
+                  />
+                  <span class="portfolio__overlay" aria-hidden="true"></span>
+                </div>
+                <div class="portfolio__text">
+                  <h3 class="portfolio__name">Masa Chips</h3>
+                  <span class="portfolio__meta">
+                    masachips.com
+                    <span class="icon portfolio__arrow" aria-hidden="true">arrow_outward</span>
+                  </span>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!--
+        Team: data pulled from 4thand1ventures.com/team. The live site does not
+        expose headshot photos; cards use initials monograms by default. To add
+        a real photo, drop an <img src="..." alt="Name"> inside .team__avatar
+        and the CSS will cover-crop it over the monogram.
+      -->
+      <section id="team" class="team" aria-labelledby="team-headline">
+        <span class="chapter team__chapter">05 / Team</span>
+        <div class="team__inner">
+          <div class="team__intro">
+            <h2 id="team-headline" class="team__headline">Our team is your team</h2>
+            <p class="team__lead">Our team is a unique blend of experienced entrepreneurs and experienced investors, all united by a shared passion for innovation and excellence.</p>
+          </div>
+
+          <div class="team__group team__group--leadership">
+            <span class="team__group-label">Leadership</span>
+            <div class="team__leadership-grid">
+            <article class="team__partner-card">
+              <div class="team__avatar team__avatar--lg" aria-hidden="true">
+                <span class="team__initials">PM</span>
+                <img src="/team/paine-matiscik.jpeg" alt="" loading="lazy" width="336" height="336" />
+              </div>
+              <div class="team__info">
+                <h3 class="team__name">Paine Matiscik</h3>
+                <p class="team__role">Managing Partner</p>
+                <div class="team__links">
+                  <a class="team__link" href="https://www.linkedin.com/in/painematiscik/" target="_blank" rel="noopener noreferrer" aria-label="Paine Matiscik on LinkedIn">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.44-2.13 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zM7.11 20.45H3.56V9H7.1v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/>
+                    </svg>
+                    <span>LinkedIn</span>
+                  </a>
+                  <a class="team__link" href="mailto:paine@4thand1ventures.com">
+                    <span class="icon" aria-hidden="true">mail_outline</span>
+                    <span>paine@4thand1ventures.com</span>
+                  </a>
+                </div>
+              </div>
+            </article>
+            <article class="team__partner-card">
+              <div class="team__avatar team__avatar--lg" aria-hidden="true">
+                <span class="team__initials">GV</span>
+                <img src="/team/grant-valenstein.jpeg" alt="" loading="lazy" width="336" height="336" />
+              </div>
+              <div class="team__info">
+                <h3 class="team__name">Grant Valenstein</h3>
+                <p class="team__role">Principal and Head of Operations</p>
+                <div class="team__links">
+                  <a class="team__link" href="#" aria-label="Grant Valenstein on LinkedIn (link pending)">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.44-2.13 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zM7.11 20.45H3.56V9H7.1v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/>
+                    </svg>
+                    <span>LinkedIn</span>
+                  </a>
+                </div>
+              </div>
+            </article>
+            </div>
+          </div>
+
+          <div class="team__group team__group--partners">
+            <span class="team__group-label">Partners</span>
+            <div class="team__advisors">
+              <article class="team__card">
+                <div class="team__avatar" aria-hidden="true">
+                  <span class="team__initials">AS</span>
+                  <img src="/team/andrew-sendejo.jpeg" alt="" loading="lazy" width="192" height="192" />
+                </div>
+                <h3 class="team__name">Andrew Sendejo</h3>
+                <p class="team__role">Partner</p>
+                <a class="team__link" href="#" aria-label="Andrew Sendejo on LinkedIn (link pending)">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.44-2.13 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zM7.11 20.45H3.56V9H7.1v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/>
+                  </svg>
+                  <span>LinkedIn</span>
+                </a>
+              </article>
+              <article class="team__card">
+                <div class="team__avatar" aria-hidden="true">
+                  <span class="team__initials">WL</span>
+                  <img src="/team/will-levis.jpeg" alt="" loading="lazy" width="192" height="192" />
+                </div>
+                <h3 class="team__name">Will Levis</h3>
+                <p class="team__role">Partner</p>
+                <a class="team__link" href="#" aria-label="Will Levis on LinkedIn (link pending)">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.44-2.13 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zM7.11 20.45H3.56V9H7.1v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/>
+                  </svg>
+                  <span>LinkedIn</span>
+                </a>
+              </article>
+              <article class="team__card">
+                <div class="team__avatar" aria-hidden="true">
+                  <span class="team__initials">RM</span>
+                  <img src="/team/ross-matiscik.jpeg" alt="" loading="lazy" width="192" height="192" />
+                </div>
+                <h3 class="team__name">Ross Matiscik</h3>
+                <p class="team__role">Partner</p>
+                <a class="team__link" href="#" aria-label="Ross Matiscik on LinkedIn (link pending)">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.44-2.13 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zM7.11 20.45H3.56V9H7.1v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/>
+                  </svg>
+                  <span>LinkedIn</span>
+                </a>
+              </article>
+            </div>
+          </div>
+
+          <div class="team__group team__group--advisors">
+            <span class="team__group-label">Advisors</span>
+            <div class="team__advisors">
+              <article class="team__card">
+                <div class="team__avatar" aria-hidden="true">
+                  <span class="team__initials">JB</span>
+                  <img src="/team/jaan-bains.png" alt="" loading="lazy" width="192" height="192" />
+                </div>
+                <h3 class="team__name">Jaan Bains</h3>
+                <p class="team__role">CEO &amp; Founder, Saepio Capital Management</p>
+                <a class="team__link" href="https://www.linkedin.com/in/jaan-bains-24012157/" target="_blank" rel="noopener noreferrer" aria-label="Jaan Bains on LinkedIn">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.44-2.13 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zM7.11 20.45H3.56V9H7.1v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/>
+                  </svg>
+                  <span>LinkedIn</span>
+                </a>
+              </article>
+              <article class="team__card">
+                <div class="team__avatar" aria-hidden="true">
+                  <span class="team__initials">BW</span>
+                  <img src="/team/blake-wiley.jpeg" alt="" loading="lazy" width="192" height="192" />
+                </div>
+                <h3 class="team__name">Blake Wiley</h3>
+                <p class="team__role">Co-Founder, Access Capital</p>
+                <a class="team__link" href="https://www.linkedin.com/in/blake-wiley-1688071b8/" target="_blank" rel="noopener noreferrer" aria-label="Blake Wiley on LinkedIn">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.44-2.13 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zM7.11 20.45H3.56V9H7.1v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/>
+                  </svg>
+                  <span>LinkedIn</span>
+                </a>
+              </article>
+              <article class="team__card">
+                <div class="team__avatar" aria-hidden="true">
+                  <span class="team__initials">AB</span>
+                  <img src="/team/alex-bente.jpeg" alt="" loading="lazy" width="192" height="192" />
+                </div>
+                <h3 class="team__name">Alex Bente</h3>
+                <p class="team__role">Founding Partner, ADvantage</p>
+                <a class="team__link" href="https://www.linkedin.com/in/alexanderbente/" target="_blank" rel="noopener noreferrer" aria-label="Alex Bente on LinkedIn">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.44-2.13 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zM7.11 20.45H3.56V9H7.1v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/>
+                  </svg>
+                  <span>LinkedIn</span>
+                </a>
+              </article>
+              <article class="team__card">
+                <div class="team__avatar" aria-hidden="true">
+                  <span class="team__initials">MB</span>
+                  <img src="/team/matt-bocci.png" alt="" loading="lazy" width="192" height="192" />
+                </div>
+                <h3 class="team__name">Matt Bocci</h3>
+                <p class="team__role">Principal at 01</p>
+                <a class="team__link" href="https://www.linkedin.com/in/m-bocci/" target="_blank" rel="noopener noreferrer" aria-label="Matt Bocci on LinkedIn">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.44-2.13 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zM7.11 20.45H3.56V9H7.1v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/>
+                  </svg>
+                  <span>LinkedIn</span>
+                </a>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!--
+        Track Record: numerals per latest client brief. Update data-count when
+        client provides revised figures.
+      -->
+      <section id="track-record" class="track-record" aria-label="Track record">
+        <span class="chapter track-record__chapter">06 / Track Record</span>
+        <div class="track-record__inner">
+          <div class="track-record__stat card-surface">
+            <span class="track-record__numeral" data-count="6">6</span>
+            <span class="track-record__label">Portfolio Companies</span>
+            <p class="track-record__detail">Active across consumer brands and consumer tech, seed through Series B.</p>
+          </div>
+          <div class="track-record__stat card-surface">
+            <span class="track-record__numeral" data-count="23">23</span>
+            <span class="track-record__label">Investments</span>
+            <p class="track-record__detail">Total positions taken since inception.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="connect" class="connect" aria-labelledby="connect-headline">
+        <span class="chapter connect__chapter">07 / Clubhouse 41</span>
+        <div class="connect__inner">
+          <img class="connect__logo" src="/logos/clubhouse41.webp" alt="Clubhouse 41" width="64" height="64" />
+          <h2 id="connect-headline" class="connect__headline">Clubhouse 41</h2>
+          <p class="connect__lede">Invest alongside professional athletes.</p>
+          <a class="cta connect__cta" href="https://clubhouse41.com" target="_blank" rel="noopener noreferrer">
+            <span>Learn more</span>
+            <span class="icon" aria-hidden="true">arrow_forward</span>
+          </a>
+        </div>
+      </section>
+
+      <footer id="footer" class="footer" aria-label="Site footer">
+        <div class="footer__inner">
+          <div class="footer__brand">
+            <span class="footer__mark">4th &amp; 1 Ventures</span>
+            <span class="footer__tagline">Venture powered by athlete access.</span>
+          </div>
+          <div class="footer__newsletter">
+            <span class="footer__newsletter-label">Stay informed</span>
+            <form class="footer__newsletter-form" novalidate>
+              <input
+                class="footer__newsletter-input"
+                type="email"
+                name="email"
+                placeholder="Your email"
+                required
+                aria-label="Email address"
+              />
+              <button class="footer__newsletter-submit" type="submit" aria-label="Subscribe">
+                <span class="icon" aria-hidden="true">arrow_forward</span>
+              </button>
+            </form>
+          </div>
+          <div class="footer__bottom">
+            <div class="footer__legal">
+              <span>© <span id="footer-year">2026</span> 4th &amp; 1 Ventures.</span>
+              <a href="/privacy">Privacy Policy</a>
+            </div>
+            <div class="footer__socials">
+              <a class="footer__social" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.44-2.13 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zM7.11 20.45H3.56V9H7.1v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/>
+                </svg>
+              </a>
+              <a class="footer__social" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.72 3.72 0 01-1.38-.9 3.72 3.72 0 01-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16zM12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63a5.88 5.88 0 00-2.13 1.38A5.88 5.88 0 00.63 4.14C.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12c0 3.26.01 3.67.07 4.95.06 1.27.26 2.15.56 2.91.31.79.74 1.46 1.38 2.13.67.64 1.34 1.07 2.13 1.38.76.3 1.64.5 2.91.56 1.28.06 1.69.07 4.95.07 3.26 0 3.67-.01 4.95-.07 1.27-.06 2.15-.26 2.91-.56a5.88 5.88 0 002.13-1.38c.64-.67 1.07-1.34 1.38-2.13.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95 0-3.26-.01-3.67-.07-4.95-.06-1.27-.26-2.15-.56-2.91a5.88 5.88 0 00-1.38-2.13A5.88 5.88 0 0019.86.63C19.1.33 18.22.13 16.95.07 15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 100 12.32 6.16 6.16 0 000-12.32zm0 10.16a4 4 0 110-8 4 4 0 010 8zm6.4-11.85a1.44 1.44 0 11-2.88 0 1.44 1.44 0 012.88 0z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>

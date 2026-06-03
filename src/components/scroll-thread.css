@@ -1,0 +1,51 @@
+.scroll-thread {
+  position: fixed;
+  right: var(--space-32);
+  top: 18vh;
+  bottom: 18vh;
+  width: 1px;
+  z-index: var(--z-nav);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-base) ease;
+}
+
+.scroll-thread[data-active='true'] {
+  opacity: 1;
+}
+
+.scroll-thread__rail {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    var(--accent-muted) 16%,
+    var(--accent-muted) 84%,
+    transparent 100%
+  );
+  opacity: 0.55;
+}
+
+.scroll-thread__dot {
+  position: absolute;
+  left: -4px;
+  top: 0;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent-gradient-vertical);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 0 16px var(--accent-glow),
+    0 0 28px var(--accent-glow-teal);
+  will-change: transform;
+}
+
+@media (max-width: 1024px) {
+  .scroll-thread { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-thread { display: none; }
+}

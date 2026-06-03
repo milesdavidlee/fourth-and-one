@@ -1,0 +1,101 @@
+.track-record {
+  padding: var(--space-160) var(--space-48);
+  background: transparent;
+}
+
+.track-record__eyebrow {
+  display: flex;
+  max-width: var(--container);
+  margin: 0 auto var(--space-64);
+}
+
+.track-record__inner {
+  max-width: var(--container);
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-32);
+  align-items: stretch;
+}
+
+.track-record__stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-20);
+  padding: var(--space-40) var(--space-32);
+  align-items: flex-start;
+}
+
+.track-record__numeral {
+  font-family: var(--font-display);
+  font-size: var(--type-display-l-size);
+  line-height: var(--type-display-l-lh);
+  letter-spacing: var(--type-display-l-tracking);
+  font-weight: var(--type-display-l-weight);
+  background: var(--accent-gradient-electric);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  font-feature-settings: 'tnum';
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.track-record__digit {
+  display: inline-block;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-origin: 50% 50%;
+}
+
+.track-record__digit > span {
+  display: inline-block;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-origin: 50% 50%;
+}
+
+.track-record__label {
+  font-family: var(--font-text);
+  font-size: var(--type-body-s-size);
+  line-height: var(--type-body-s-lh);
+  letter-spacing: var(--type-meta-tracking);
+  font-weight: var(--type-meta-weight);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.track-record__detail {
+  margin: 0;
+  font-family: var(--font-text);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-lh);
+  color: var(--text-secondary);
+  max-width: 36ch;
+}
+
+@media (max-width: 1024px) {
+  .track-record__numeral {
+    font-size: var(--type-display-m-size);
+    line-height: var(--type-display-m-lh);
+    letter-spacing: var(--type-display-m-tracking);
+  }
+}
+
+@media (max-width: 768px) {
+  .track-record {
+    padding: var(--space-80) var(--space-24);
+  }
+  .track-record__eyebrow {
+    margin-bottom: var(--space-32);
+  }
+  .track-record__inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-24);
+  }
+  .track-record__numeral {
+    font-size: var(--type-display-m-size);
+    letter-spacing: var(--type-display-m-tracking);
+  }
+}

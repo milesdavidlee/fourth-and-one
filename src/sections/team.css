@@ -1,0 +1,354 @@
+.team {
+  padding: var(--space-160) var(--space-48);
+  background: transparent;
+}
+
+.team__eyebrow {
+  display: flex;
+  max-width: var(--container);
+  margin: 0 auto var(--space-48);
+}
+
+.team__inner {
+  max-width: var(--container);
+  margin-inline: auto;
+}
+
+.team__intro {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--space-32);
+  margin-bottom: var(--space-120);
+}
+
+.team__headline {
+  grid-column: 1 / 8;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--type-display-l-size);
+  line-height: var(--type-display-l-lh);
+  letter-spacing: var(--type-display-l-tracking);
+  font-weight: var(--type-display-l-weight);
+  color: var(--text-primary);
+  max-width: 12ch;
+}
+
+.team__headline .word-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  line-height: inherit;
+}
+.team__headline .word {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+.team__lead {
+  grid-column: 8 / 13;
+  align-self: end;
+  margin: 0;
+  font-family: var(--font-text);
+  font-size: var(--type-body-l-size);
+  line-height: var(--type-body-l-lh);
+  font-weight: var(--type-body-l-weight);
+  color: var(--text-secondary);
+  max-width: var(--container-read);
+  opacity: 0;
+}
+
+.team__group {
+  margin-bottom: var(--space-120);
+}
+
+.team__group:last-child { margin-bottom: 0; }
+
+.team__group-label {
+  display: block;
+  font-family: var(--font-text);
+  font-size: var(--type-meta-size);
+  line-height: var(--type-meta-lh);
+  letter-spacing: var(--type-meta-tracking);
+  font-weight: var(--type-meta-weight);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-48);
+}
+
+/* === Partners (editorial card) === */
+.team__partner-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-64);
+  align-items: center;
+  opacity: 0;
+}
+
+.team__partner-card .team__info {
+  display: grid;
+  gap: var(--space-16);
+  max-width: 36ch;
+}
+
+.team__partner-card .team__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--type-display-m-size);
+  line-height: var(--type-display-m-lh);
+  letter-spacing: var(--type-display-m-tracking);
+  font-weight: var(--type-display-m-weight);
+  color: var(--text-primary);
+}
+
+.team__partner-card .team__role {
+  margin: 0;
+  font-family: var(--font-text);
+  font-size: var(--type-body-l-size);
+  line-height: var(--type-body-l-lh);
+  color: var(--text-secondary);
+}
+
+.team__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-24);
+  margin-top: var(--space-12);
+}
+
+.team__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  font-family: var(--font-text);
+  font-size: var(--type-body-s-size);
+  line-height: var(--type-body-s-lh);
+  color: var(--text-tertiary);
+  transition: color var(--dur-fast) ease;
+}
+
+.team__link:hover { color: var(--accent-teal); }
+.team__link svg { width: 16px; height: 16px; }
+.team__link .icon { font-size: 16px; }
+
+/* === Leadership (2-up partner cards) === */
+.team__leadership-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-48);
+}
+
+.team__leadership-grid .team__partner-card {
+  gap: var(--space-32);
+  align-items: center;
+}
+
+.team__leadership-grid .team__avatar--lg {
+  width: 240px;
+  height: 240px;
+}
+
+.team__leadership-grid .team__partner-card .team__info {
+  max-width: none;
+}
+
+/* === Partners (3-up small cards) === */
+.team__partners-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-48) var(--space-32);
+}
+
+/* === Advisors (grid) === */
+.team__advisors {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-48) var(--space-32);
+}
+
+.team__card {
+  display: grid;
+  gap: var(--space-20);
+  opacity: 0;
+}
+
+.team__card .team__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--type-display-s-size);
+  line-height: var(--type-display-s-lh);
+  letter-spacing: var(--type-display-s-tracking);
+  font-weight: var(--type-display-s-weight);
+  color: var(--text-primary);
+}
+
+.team__card .team__role {
+  margin: 0;
+  font-family: var(--font-text);
+  font-size: var(--type-body-s-size);
+  line-height: var(--type-body-s-lh);
+  color: var(--text-secondary);
+}
+
+/* === Avatar — clean, photo-first, no decorative ring === */
+.team__avatar {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-l);
+  background: var(--surface-raised);
+  overflow: hidden;
+  isolation: isolate;
+  flex-shrink: 0;
+}
+
+/* Partner avatar sits in an auto grid track, so it needs an explicit width
+   (width:100% has no parent reference when the column is "auto"). */
+.team__avatar--lg {
+  width: 320px;
+  height: 320px;
+}
+
+.team__avatar img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Initials kept as a layout-stable fallback that sits behind the image. */
+.team__initials {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  font-size: var(--type-display-s-size);
+}
+
+.team__avatar--lg .team__initials {
+  font-size: var(--type-display-m-size);
+}
+
+@media (max-width: 1024px) {
+  .team__intro {
+    grid-template-columns: 1fr;
+    gap: var(--space-32);
+    margin-bottom: var(--space-96);
+  }
+  .team__headline,
+  .team__lead {
+    grid-column: 1 / -1;
+    max-width: none;
+  }
+  .team__leadership-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-64);
+  }
+  .team__leadership-grid .team__avatar--lg {
+    width: 280px;
+    height: 280px;
+  }
+  .team__partners-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-48);
+  }
+  .team__advisors {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-48);
+  }
+  .team__avatar--lg {
+    width: 280px;
+    height: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .team {
+    padding: var(--space-80) var(--space-24);
+  }
+  .team__group {
+    margin-bottom: var(--space-64);
+  }
+  .team__headline {
+    font-size: var(--type-display-m-size);
+    line-height: var(--type-display-m-lh);
+    letter-spacing: var(--type-display-m-tracking);
+  }
+  .team__partner-card {
+    grid-template-columns: 1fr;
+    gap: var(--space-32);
+    align-items: start;
+  }
+  .team__partner-card .team__name {
+    font-size: var(--type-display-s-size);
+    line-height: var(--type-display-s-lh);
+    letter-spacing: var(--type-display-s-tracking);
+  }
+  .team__leadership-grid {
+    gap: var(--space-48);
+  }
+  .team__leadership-grid .team__avatar--lg {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+  .team__partners-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-32);
+  }
+  .team__advisors {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-32);
+  }
+  .team__avatar--lg {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .team {
+    padding: var(--space-64) var(--space-20);
+  }
+  .team__headline {
+    font-size: var(--type-display-s-size);
+    line-height: var(--type-display-s-lh);
+    letter-spacing: var(--type-display-s-tracking);
+  }
+  .team__partners-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-32);
+  }
+  .team__advisors {
+    grid-template-columns: 1fr;
+    gap: var(--space-32);
+  }
+  .team__partner-card .team__name {
+    font-size: var(--type-headline-size);
+    line-height: var(--type-headline-lh);
+  }
+  .team__card .team__name {
+    font-size: var(--type-headline-size);
+    line-height: var(--type-headline-lh);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .team__headline,
+  .team__lead,
+  .team__partner-card,
+  .team__card {
+    opacity: 1;
+    transform: none;
+  }
+}
