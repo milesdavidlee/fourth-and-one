@@ -112,13 +112,13 @@ const BEATS: Beat[] = [
   { id: 'investment-approach', radius: 4.0, yaw: 0,                 pitch: 0.05, ballPosX: 0, ballPosY: 0, ballPosZ: 0,   ballScale: 1.00, ballRotX: PROFILE_X,                ballRotY: PROFILE_Y,                ballRotZ: PROFILE_Z, lightLevel: 0.85, caAmount: 0.0050 },
   // Demographics — pull back wide, slight high angle.
   { id: 'demographics',        radius: 6.5, yaw: 0,                 pitch: 0.2,  ballPosX: 0, ballPosY: 0, ballPosZ: 0,   ballScale: 1.00, ballRotX: PROFILE_X,                ballRotY: PROFILE_Y,                ballRotZ: PROFILE_Z, lightLevel: 0.90, caAmount: 0.0015 },
-  // Portfolio — the throw. As we transition INTO portfolio the ball spirals
-  // 3× around its long axis (+6π on rotX). Camera orbits to the side to
-  // watch the pass go by. The cumulative +6π is preserved through Team /
+  // Portfolio — at-rest entry pose. The spiral happens scrolling THROUGH
+  // this section, not entering it (the +6π sits on Team's beat so the
+  // transition INTO Team is what spins the ball).
+  { id: 'portfolio',           radius: 5.5, yaw: Math.PI * 0.25,    pitch: 0.05, ballPosX: 0, ballPosY: 0, ballPosZ: 0,   ballScale: 1.00, ballRotX: PROFILE_X,                ballRotY: PROFILE_Y,                ballRotZ: PROFILE_Z, lightLevel: 0.35, caAmount: 0.0030 },
+  // Team — the catch. The 3× spiral (+6π on rotX) plays out during the
+  // portfolio→team scroll. The cumulative rotation is preserved through
   // Track Record / Connect / Footer so the football doesn't unwind.
-  { id: 'portfolio',           radius: 5.5, yaw: Math.PI * 0.25,    pitch: 0.05, ballPosX: 0, ballPosY: 0, ballPosZ: 0,   ballScale: 1.00, ballRotX: PROFILE_X + Math.PI * 6, ballRotY: PROFILE_Y,                ballRotZ: PROFILE_Z, lightLevel: 0.35, caAmount: 0.0030 },
-  // Team — caught and carried. No further rotation (holds portfolio's
-  // cumulative rotX value), camera continues its orbit.
   { id: 'team',                radius: 5.5, yaw: Math.PI * 0.45,    pitch: 0.15, ballPosX: 0, ballPosY: 0, ballPosZ: 0,   ballScale: 1.00, ballRotX: PROFILE_X + Math.PI * 6, ballRotY: PROFILE_Y,                ballRotZ: PROFILE_Z, lightLevel: 0.35, caAmount: 0.0010 },
   // Track Record — front shot, amplified fringing for the metrics moment.
   // Maintains the cumulative rotX so the football doesn't reverse-spin.
@@ -494,12 +494,17 @@ export function initHeroFootball(canvas: HTMLCanvasElement): HeroFootballHandle 
   const ro = new ResizeObserver(resize);
   ro.observe(canvas);
 
-  // Viewport-aware base Z rotation. Landscape = horizontal football,
-  // portrait = vertical. Recalculated on every resize.
+  // Viewport-aware orientation + scale. Landscape = horizontal football at
+  // standard radius. Portrait = football flipped vertical (rotated 90° in
+  // screen plane via WORLD Z axis) + camera pulled closer so the football
+  // actually fills the narrower viewport.
   let portraitZ = 0;
+  let radiusScale = 1;
+  const WORLD_Z = new THREE.Vector3(0, 0, 1);
   function updateOrientation() {
     const isPortrait = window.innerHeight > window.innerWidth;
     portraitZ = isPortrait ? PORTRAIT_Z_OFFSET : 0;
+    radiusScale = isPortrait ? 0.65 : 1;
   }
   updateOrientation();
   window.addEventListener('resize', updateOrientation);
@@ -553,10 +558,12 @@ export function initHeroFootball(canvas: HTMLCanvasElement): HeroFootballHandle 
     noiseTex.offset.y = (elapsed.t * 0.011) % 1;
 
     if (modelReady && pivot.children.length) {
-      // Camera on a sphere around origin.
-      const cx = currentPose.radius * Math.cos(currentPose.pitch) * Math.sin(currentPose.yaw);
-      const cy = currentPose.radius * Math.sin(currentPose.pitch);
-      const cz = currentPose.radius * Math.cos(currentPose.pitch) * Math.cos(currentPose.yaw);
+      // Camera on a sphere around origin. Pulled closer in portrait so the
+      // football fills the narrower viewport.
+      const r = currentPose.radius * radiusScale;
+      const cx = r * Math.cos(currentPose.pitch) * Math.sin(currentPose.yaw);
+      const cy = r * Math.sin(currentPose.pitch);
+      const cz = r * Math.cos(currentPose.pitch) * Math.cos(currentPose.yaw);
       camera.position.set(cx, cy, cz);
       camera.lookAt(0, 0, 0);
 
@@ -564,7 +571,13 @@ export function initHeroFootball(canvas: HTMLCanvasElement): HeroFootballHandle 
       pivot.scale.setScalar(currentPose.ballScale);
       pivot.rotation.x = currentPose.ballRotX;
       pivot.rotation.y = currentPose.ballRotY;
-      pivot.rotation.z = currentPose.ballRotZ + portraitZ;
+      pivot.rotation.z = currentPose.ballRotZ;
+      // Portrait flip: rotate 90° around the WORLD Z axis (camera-depth) so
+      // the football's silhouette stands up in the viewport. Applied after
+      // the Euler chain so it composes cleanly regardless of rotX/rotY state.
+      if (portraitZ !== 0) {
+        pivot.rotateOnWorldAxis(WORLD_Z, portraitZ);
+      }
 
       // Per-beat lighting. The fabric uniform gets the full lightLevel so
       // the background dims dramatically. The football lighting has a floor
