@@ -47,4 +47,11 @@ if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 initLoader().then(() => {
   // Layout may have shifted as fonts loaded; refresh triggers post-dismiss.
   ScrollTrigger.refresh();
+  // Hand-off to the intro choreography. Nav + hero listen for this once.
+  // Small delay lets the football canvas (which fades in via CSS .is-ready)
+  // breathe for ~150ms so the user registers "scene, then text" rather than
+  // "everything at once".
+  window.setTimeout(() => {
+    document.dispatchEvent(new CustomEvent('intro-ready'));
+  }, 150);
 });

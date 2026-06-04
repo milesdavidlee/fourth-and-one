@@ -1,5 +1,5 @@
 import './nav.css';
-import { gsap } from '../lib/gsap';
+import { gsap, durations, easings } from '../lib/gsap';
 import { getLenis } from '../lib/scroll';
 
 // Three concerns:
@@ -14,6 +14,28 @@ import { getLenis } from '../lib/scroll';
 const easeOutExpo = (t: number) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t));
 
 export function initNav(root: HTMLElement) {
+  // === Intro entrance ===
+  // Pin nav invisible immediately so it doesn't flash above the loader, then
+  // fade it in when main.ts dispatches 'intro-ready' (after loader fade).
+  // We animate opacity only — the transform property is already in use by
+  // the hide-on-scroll behavior, and stacking another transform on top would
+  // fight with that.
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduced) {
+    gsap.set(root, { opacity: 0 });
+    document.addEventListener(
+      'intro-ready',
+      () => {
+        gsap.to(root, {
+          opacity: 1,
+          duration: durations.entrance,
+          ease: easings.out
+        });
+      },
+      { once: true }
+    );
+  }
+
   // === data-scrolled (transparent → blurred) ===
   const sentinel = document.createElement('div');
   sentinel.style.position = 'absolute';

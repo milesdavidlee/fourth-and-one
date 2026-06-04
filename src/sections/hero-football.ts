@@ -19,7 +19,7 @@ import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
-import { ScrollTrigger } from '../lib/gsap';
+import { gsap, ScrollTrigger } from '../lib/gsap';
 
 // === Chromatic aberration shader pass ===
 //
@@ -563,6 +563,33 @@ export function initHeroFootball(canvas: HTMLCanvasElement): HeroFootballHandle 
   updateOrientation();
   window.addEventListener('resize', updateOrientation);
 
+  // === Intro entrance — ball falls in from above + rotates into hero pose ===
+  // Pinned at start values immediately so when the canvas first reveals (via
+  // .is-ready on first frame) the ball is already off-screen above, not
+  // sitting in its final pose. On 'intro-ready' (dispatched by main.ts after
+  // the loader fades), these tween to zero — ball drops down, rotates from
+  // vertical to laying, and scales up. Power3.out gives a natural decel.
+  const introReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const introOffset = introReduced
+    ? { y: 0, rotZ: 0, scale: 1 }
+    : { y: 5.0, rotZ: Math.PI * 0.5, scale: 0.7 };
+
+  if (!introReduced) {
+    document.addEventListener(
+      'intro-ready',
+      () => {
+        gsap.to(introOffset, {
+          y: 0,
+          rotZ: 0,
+          scale: 1,
+          duration: 1.1,
+          ease: 'power3.out'
+        });
+      },
+      { once: true }
+    );
+  }
+
   // === Scroll-driven pose ===
   let currentPose: Pose = {
     radius: BEATS[0].radius, yaw: BEATS[0].yaw, pitch: BEATS[0].pitch,
@@ -629,11 +656,19 @@ export function initHeroFootball(canvas: HTMLCanvasElement): HeroFootballHandle 
       camera.position.set(cx, cy, cz);
       camera.lookAt(0, 0, 0);
 
-      pivot.position.set(currentPose.ballPosX, currentPose.ballPosY, currentPose.ballPosZ);
-      pivot.scale.setScalar(currentPose.ballScale);
+      // Intro offsets are added to the scroll pose. At the start of the
+      // entrance they place the ball above the viewport, vertical, and
+      // smaller. They tween to zero on 'intro-ready', leaving the scroll
+      // pose untouched for the rest of the page.
+      pivot.position.set(
+        currentPose.ballPosX,
+        currentPose.ballPosY + introOffset.y,
+        currentPose.ballPosZ
+      );
+      pivot.scale.setScalar(currentPose.ballScale * introOffset.scale);
       pivot.rotation.x = currentPose.ballRotX;
       pivot.rotation.y = currentPose.ballRotY;
-      pivot.rotation.z = currentPose.ballRotZ;
+      pivot.rotation.z = currentPose.ballRotZ + introOffset.rotZ;
       // Portrait flip: rotate 90° around the WORLD Z axis (camera-depth) so
       // the football's silhouette stands up in the viewport. Applied after
       // the Euler chain so it composes cleanly regardless of rotX/rotY state.

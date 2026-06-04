@@ -22,6 +22,7 @@
   font-weight: var(--type-display-l-weight);
   color: var(--text-primary);
   max-width: 20ch;
+  text-wrap: balance;
 }
 
 .approach__headline .word-mask,
@@ -52,6 +53,9 @@
   line-height: var(--type-body-l-lh);
   font-weight: var(--type-body-l-weight);
   color: var(--text-primary);
+  /* balance: distribute words evenly across the 2 lines so the last
+     line is never a single-word widow (was "brands" hanging alone). */
+  text-wrap: balance;
 }
 
 .approach__paragraph {
@@ -61,6 +65,9 @@
   line-height: var(--type-body-l-lh);
   font-weight: var(--type-body-l-weight);
   color: var(--text-secondary);
+  /* pretty: same goal on a longer paragraph — balance would no-op past
+     the 6-line browser limit, pretty just prevents widows. */
+  text-wrap: pretty;
 }
 
 @media (max-width: 768px) {

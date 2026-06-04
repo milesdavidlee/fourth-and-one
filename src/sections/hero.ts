@@ -33,64 +33,72 @@ export function initHero(root: HTMLElement) {
       return;
     }
 
+    // Pin the hero in its pre-entrance state immediately on init so nothing
+    // flashes before the loader dismisses. Entrance plays on the
+    // 'intro-ready' event dispatched by main.ts after loader fade.
     gsap.set(split.words, { yPercent: 110, opacity: 0 });
     if (subtagline) gsap.set(subtagline, { y: 24, opacity: 0 });
     gsap.set(cta, { opacity: 0, y: 8 });
     if (mark) gsap.set(mark, { opacity: 0, x: -16 });
     if (stats) gsap.set(stats, { opacity: 0, x: 24 });
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        id: 'hero-entrance',
-        trigger: root,
-        start: 'top 80%',
-        once: true,
-        invalidateOnRefresh: true
+    const playEntrance = () => {
+      // Delay the text timeline so the football intro (ball falls / rotates
+      // / scales into hero pose, ~1.1s) plays first. Text starts overlapping
+      // the tail end of the ball settling, lands ~1s after the ball does.
+      const tl = gsap.timeline({ delay: 0.7 });
+
+      // 1) Editorial mark fades in first — sets the tone before the headline.
+      if (mark) {
+        tl.to(mark, {
+          opacity: 1,
+          x: 0,
+          duration: durations.entrance,
+          ease: easings.out
+        });
       }
-    });
 
-    // 1) Tagline word cascade.
-    tl.to(split.words, {
-      yPercent: 0,
-      opacity: 1,
-      duration: durations.headline,
-      ease: easings.out,
-      stagger: 0.10
-    });
-
-    // 2) Sub-tagline slides up (optional — markup may not include one).
-    if (subtagline) {
+      // 2) Tagline word cascade — the moment the hero declares itself.
       tl.to(
-        subtagline,
-        { y: 0, opacity: 1, duration: durations.entrance, ease: easings.out },
-        '-=0.5'
+        split.words,
+        {
+          yPercent: 0,
+          opacity: 1,
+          duration: durations.headline,
+          ease: easings.out,
+          stagger: 0.08
+        },
+        '-=0.4'
       );
-    }
 
-    // 3) CTA small slide + fade.
-    tl.to(
-      cta,
-      { opacity: 1, y: 0, duration: durations.entrance, ease: easings.inOut },
-      '-=0.55'
-    );
+      // 3) Sub-tagline slides up (optional — markup may not include one).
+      if (subtagline) {
+        tl.to(
+          subtagline,
+          { y: 0, opacity: 1, duration: durations.entrance, ease: easings.out },
+          '-=0.5'
+        );
+      }
 
-    // 4) Editorial mark slides in from left.
-    if (mark) {
+      // 4) CTA small slide + fade — lands last so the eye finishes on the
+      // call to action.
       tl.to(
-        mark,
-        { opacity: 1, x: 0, duration: durations.entrance, ease: easings.out },
-        '-=0.7'
+        cta,
+        { opacity: 1, y: 0, duration: durations.entrance, ease: easings.inOut },
+        '-=0.45'
       );
-    }
 
-    // 5) Stats card slides in from right, lands last.
-    if (stats) {
-      tl.to(
-        stats,
-        { opacity: 1, x: 0, duration: durations.entrance, ease: easings.out },
-        '-=0.65'
-      );
-    }
+      // 5) Stats card (if present) slides in from right alongside the CTA.
+      if (stats) {
+        tl.to(
+          stats,
+          { opacity: 1, x: 0, duration: durations.entrance, ease: easings.out },
+          '<'
+        );
+      }
+    };
+
+    document.addEventListener('intro-ready', playEntrance, { once: true });
   });
 
   requestAnimationFrame(() => ScrollTrigger.refresh());
