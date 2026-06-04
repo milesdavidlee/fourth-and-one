@@ -118,8 +118,7 @@
 }
 
 /* Chapter mark — "01 / Approach". Single-line section label, Apple-grade.
-   Number is bright/tabular, slash dims, label takes the same uppercase
-   tracking. Centered to --container so every section's chapter aligns. */
+   Centered over the section's content. */
 .chapter {
   display: block;
   font-family: var(--font-text);
@@ -132,8 +131,8 @@
   font-feature-settings: 'tnum';
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
-  max-width: var(--container);
-  margin: 0 auto var(--space-64);
+  text-align: center;
+  margin: 0 0 var(--space-64);
   padding-inline: var(--space-48);
   box-sizing: border-box;
 }

@@ -1,17 +1,16 @@
 .hero {
   position: relative;
   min-height: 100dvh;
-  padding: var(--space-160) var(--space-48) var(--space-120);
+  padding: var(--space-120) var(--space-48);
   display: grid;
-  align-items: center;
+  align-items: end;        /* content lives in the bottom half — football fills above */
+  justify-items: center;   /* everything centered horizontally */
   overflow: hidden;
   isolation: isolate;
   background: transparent;
 }
 
-/* Three.js football canvas — fixed full-viewport, sits behind all main
-   content (z-index 0). Hero + Approach have transparent backgrounds so the
-   football shows through; later sections cover it with their own bg. */
+/* Three.js football canvas — fixed full-viewport, behind all main content. */
 .football-canvas {
   position: fixed;
   inset: 0;
@@ -23,7 +22,6 @@
   opacity: 0;
   transition: opacity var(--dur-entrance) ease;
 }
-
 .football-canvas.is-ready {
   opacity: 1;
 }
@@ -35,17 +33,16 @@
   margin-inline: auto;
   width: 100%;
   display: grid;
-  gap: var(--space-32);
-  justify-items: start;
+  gap: var(--space-24);
+  justify-items: center;
+  text-align: center;
 }
 
-/* Editorial tag above the headline — sits in the grid flow so vertical
-   spacing is predictable. Pulsing live-dot + gradient rule + label. */
+/* Pulsing live-dot + rule + label — centered above the headline. */
 .hero__mark {
   display: inline-flex;
   align-items: center;
   gap: var(--space-12);
-  margin-bottom: var(--space-32);
   pointer-events: none;
   opacity: 0;
 }
@@ -74,96 +71,10 @@
   font-family: var(--font-text);
   font-size: var(--type-meta-size);
   line-height: var(--type-meta-lh);
-  letter-spacing: var(--type-meta-tracking);
+  letter-spacing: 0.1em;
   font-weight: var(--type-meta-weight);
   text-transform: uppercase;
   color: var(--text-secondary);
-}
-
-/* Right-side stats card — Hartmann-style bordered container with three
-   data points: athletes / states / sports. Substantial structural anchor
-   for the right half of the hero. */
-.hero__stats {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  padding: var(--space-32);
-  min-width: 240px;
-  z-index: 1;
-  opacity: 0;
-  backdrop-filter: blur(12px) saturate(120%);
-  -webkit-backdrop-filter: blur(12px) saturate(120%);
-}
-
-.hero__stat {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  padding: var(--space-16) 0;
-}
-
-.hero__stat + .hero__stat {
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.hero__stat-numeral {
-  font-family: var(--font-display);
-  font-size: var(--type-display-s-size);
-  line-height: 1;
-  letter-spacing: var(--type-display-s-tracking);
-  font-weight: var(--type-display-s-weight);
-  background: var(--accent-gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-  font-feature-settings: 'tnum';
-  font-variant-numeric: tabular-nums;
-}
-
-.hero__stat-suffix {
-  font-size: 0.65em;
-  vertical-align: baseline;
-  margin-left: 1px;
-}
-
-.hero__stat-label {
-  font-family: var(--font-text);
-  font-size: var(--type-meta-size);
-  line-height: var(--type-meta-lh);
-  letter-spacing: var(--type-meta-tracking);
-  font-weight: var(--type-meta-weight);
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-}
-
-@media (max-width: 1199px) {
-  .hero__stats { min-width: 200px; padding: var(--space-24); }
-}
-
-@media (max-width: 1024px) {
-  .hero__stats {
-    position: relative;
-    top: auto;
-    right: auto;
-    transform: none;
-    margin-top: var(--space-48);
-  }
-}
-
-@media (max-width: 768px) {
-  .hero__mark { display: none; }
-  .hero__stats { display: none; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero__mark,
-  .hero__stats { opacity: 1; }
-  .hero__mark-dot { animation: none; }
 }
 
 .hero__tagline {
@@ -174,7 +85,18 @@
   letter-spacing: var(--type-display-xl-tracking);
   font-weight: var(--type-display-xl-weight);
   color: var(--text-primary);
-  max-width: 18ch;
+  max-width: 14ch;
+}
+
+.hero__tagline .word-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  line-height: inherit;
+}
+.hero__tagline .word {
+  display: inline-block;
+  will-change: transform, opacity;
 }
 
 .hero__subtagline {
@@ -189,52 +111,113 @@
   opacity: 0;
 }
 
-/* Positional / state-only — visual styling comes from the shared .cta utility */
 .hero__cta {
   margin-top: var(--space-16);
   opacity: 0;
 }
 
-/* word-split masking (used by the tagline) */
-.hero__tagline .word-mask {
-  display: inline-block;
-  overflow: hidden;
-  vertical-align: bottom;
-  line-height: inherit;
+/* === Metrics row — horizontal ticker below the CTA ===
+   Three stats side-by-side, separated by hairline rules. Replaces the old
+   right-anchored card. */
+.hero__stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-top: var(--space-32);
+  padding: var(--space-20) var(--space-32);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  opacity: 0;
 }
-.hero__tagline .word {
-  display: inline-block;
-  will-change: transform, opacity;
+
+.hero__stat {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-8);
+  padding: 0 var(--space-24);
+}
+
+.hero__stat + .hero__stat {
+  border-left: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.hero__stat-numeral {
+  font-family: var(--font-display);
+  font-size: 22px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  font-feature-settings: 'tnum';
+  font-variant-numeric: tabular-nums;
+}
+
+.hero__stat-suffix {
+  font-size: 0.7em;
+}
+
+.hero__stat-label {
+  font-family: var(--font-text);
+  font-size: var(--type-meta-size);
+  line-height: 1;
+  letter-spacing: 0.08em;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+
+@media (max-width: 1024px) {
+  .hero {
+    padding: var(--space-96) var(--space-40) var(--space-80);
+  }
 }
 
 @media (max-width: 768px) {
   .hero {
-    padding: var(--space-120) var(--space-24) var(--space-80);
+    padding: var(--space-80) var(--space-24) var(--space-64);
   }
   .hero__tagline {
     font-size: var(--type-display-m-size);
     line-height: var(--type-display-m-lh);
     letter-spacing: var(--type-display-m-tracking);
+    max-width: 18ch;
   }
   .hero__subtagline {
     font-size: var(--type-body-l-size);
     line-height: var(--type-body-l-lh);
   }
-  .hero__mark-label { font-size: 11px; }
+  .hero__mark-label {
+    font-size: 11px;
+  }
+  .hero__stats {
+    padding: var(--space-16) var(--space-20);
+    gap: 0;
+  }
+  .hero__stat {
+    padding: 0 var(--space-16);
+  }
+  .hero__stat-numeral {
+    font-size: 18px;
+  }
 }
 
 @media (max-width: 480px) {
   .hero {
-    padding: var(--space-96) var(--space-20) var(--space-64);
+    padding: var(--space-64) var(--space-20) var(--space-48);
   }
   .hero__tagline {
-    font-size: 42px;
-    line-height: 46px;
+    font-size: 38px;
+    line-height: 42px;
     letter-spacing: -0.025em;
-  }
-  .hero__subtagline {
-    font-size: var(--type-body-size);
-    line-height: var(--type-body-lh);
   }
   .hero__inner {
     gap: var(--space-20);
@@ -243,10 +226,24 @@
     padding: var(--space-12) var(--space-20);
     font-size: var(--type-body-s-size);
   }
+  /* On the smallest screens the stat row can break to two lines; let it wrap. */
+  .hero__stats {
+    flex-wrap: wrap;
+    padding: var(--space-12) var(--space-16);
+  }
+  .hero__stat {
+    padding: var(--space-4) var(--space-12);
+  }
+  .hero__stat + .hero__stat {
+    border-left: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .hero__mark,
+  .hero__stats,
   .hero__subtagline,
   .hero__cta { opacity: 1; }
+  .hero__mark-dot { animation: none; }
   .hero__tagline .word { transform: none; opacity: 1; }
 }

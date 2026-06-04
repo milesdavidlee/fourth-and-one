@@ -88,6 +88,9 @@ interface Beat {
   // Chromatic aberration amount for this beat. Lerps between beats so the
   // lens fringing intensifies / relaxes per section.
   caAmount: number;
+  // Fabric dot color for this beat. Each section gets a slightly different
+  // hue (blue → teal → electric) so the background feels alive as you scroll.
+  fabricColor: THREE.Color;
 }
 
 // Base orientation, applied as the ball's rotX/rotY/rotZ in every beat.
@@ -101,35 +104,41 @@ const PROFILE_Y = Math.PI * 0.5;
 const PROFILE_Z = 0;
 const PORTRAIT_Z_OFFSET = Math.PI * 0.5; // applied only when innerHeight > innerWidth
 
+// Per-beat fabric colors. Page opens (and closes) with near-black charcoal
+// dots so the texture reads as quiet ambient grain rather than bright white
+// pinpricks. Color "wakes up" at Investment Approach (the volume zooms in)
+// and runs through blue → teal → electric across the middle of the page.
+const COLOR_MONO      = new THREE.Color('#3E424A'); // hero + approach + footer — dim charcoal grey
+const COLOR_BLUE_MID  = new THREE.Color('#3F9CFF');
+const COLOR_TEAL      = new THREE.Color('#5AC8FA'); // --accent-teal
+const COLOR_TEAL_DEEP = new THREE.Color('#2B86B7'); // dimmer for moody beats
+const COLOR_ELECTRIC  = new THREE.Color('#7DD3FC'); // --accent-electric
+
 // === Beats — each section is a CAMERA SHOT of the same near-stationary ball ===
 const BEATS: Beat[] = [
-  // Hero — establishing front shot. Profile, laces visible, ball anchored.
-  { id: 'hero',                radius: 4.5, yaw: 0,                 pitch: 0,    ballPosX: 0, ballPosY: 0, ballPosZ: 0,   ballScale: 1.00, ballRotX: PROFILE_X,                ballRotY: PROFILE_Y,                ballRotZ: PROFILE_Z, lightLevel: 1.00, caAmount: 0.0010 },
-  // Approach — dolly in close. Detail of the surface and laces.
-  { id: 'approach',            radius: 3.0, yaw: 0,                 pitch: 0,    ballPosX: 0, ballPosY: 0, ballPosZ: 0,   ballScale: 1.00, ballRotX: PROFILE_X,                ballRotY: PROFILE_Y,                ballRotZ: PROFILE_Z, lightLevel: 1.00, caAmount: 0.0015 },
-  // Investment Approach — editorial 3/4 reveal. Slightly dim, amplified
-  // chromatic aberration for the dramatic new beat.
-  { id: 'investment-approach', radius: 4.0, yaw: 0,                 pitch: 0.05, ballPosX: 0, ballPosY: 0, ballPosZ: 0,   ballScale: 1.00, ballRotX: PROFILE_X,                ballRotY: PROFILE_Y,                ballRotZ: PROFILE_Z, lightLevel: 0.85, caAmount: 0.0050 },
-  // Demographics — pull back wide, slight high angle.
-  { id: 'demographics',        radius: 6.5, yaw: 0,                 pitch: 0.2,  ballPosX: 0, ballPosY: 0, ballPosZ: 0,   ballScale: 1.00, ballRotX: PROFILE_X,                ballRotY: PROFILE_Y,                ballRotZ: PROFILE_Z, lightLevel: 0.90, caAmount: 0.0015 },
-  // Portfolio — at-rest entry pose. The spiral happens scrolling THROUGH
-  // this section, not entering it (the +6π sits on Team's beat so the
-  // transition INTO Team is what spins the ball).
-  { id: 'portfolio',           radius: 5.5, yaw: Math.PI * 0.25,    pitch: 0.05, ballPosX: 0, ballPosY: 0, ballPosZ: 0,   ballScale: 1.00, ballRotX: PROFILE_X,                ballRotY: PROFILE_Y,                ballRotZ: PROFILE_Z, lightLevel: 0.35, caAmount: 0.0030 },
-  // Team — the catch. The 3× spiral (+6π on rotX) plays out during the
-  // portfolio→team scroll. The cumulative rotation is preserved through
-  // Track Record / Connect / Footer so the football doesn't unwind.
-  { id: 'team',                radius: 5.5, yaw: Math.PI * 0.45,    pitch: 0.15, ballPosX: 0, ballPosY: 0, ballPosZ: 0,   ballScale: 1.00, ballRotX: PROFILE_X + Math.PI * 6, ballRotY: PROFILE_Y,                ballRotZ: PROFILE_Z, lightLevel: 0.35, caAmount: 0.0010 },
-  // Track Record — front shot, amplified fringing for the metrics moment.
-  // Maintains the cumulative rotX so the football doesn't reverse-spin.
-  { id: 'track-record',        radius: 5.0, yaw: 0,                 pitch: 0,    ballPosX: 0, ballPosY: 0, ballPosZ: 0,   ballScale: 1.00, ballRotX: PROFILE_X + Math.PI * 6, ballRotY: PROFILE_Y,                ballRotZ: PROFILE_Z, lightLevel: 1.00, caAmount: 0.0045 },
-  // Connect — one last flip on Y (+2π) that lands laces facing camera again.
-  // X-tilt removed: keeps cumulative rotX so the ball doesn't unwind its
-  // earlier spiral.
-  { id: 'connect',             radius: 5.0, yaw: 0,                 pitch: -0.05, ballPosX: 0, ballPosY: 0, ballPosZ: 0.3, ballScale: 1.10, ballRotX: PROFILE_X + Math.PI * 6,  ballRotY: PROFILE_Y + Math.PI * 2, ballRotZ: PROFILE_Z, lightLevel: 1.00, caAmount: 0.0070 },
-  // Footer — football reintroduces. Camera pulls back; ball holds connect's
-  // final pose so the laces-forward orientation is preserved.
-  { id: 'footer',              radius: 7.5, yaw: 0,                 pitch: 0.10,  ballPosX: 0, ballPosY: 0, ballPosZ: 0,   ballScale: 0.85, ballRotX: PROFILE_X + Math.PI * 6,  ballRotY: PROFILE_Y + Math.PI * 2, ballRotZ: PROFILE_Z, lightLevel: 0.75, caAmount: 0.0020 }
+  // Hero — establishing shot. Ball fully in frame in the upper half; text
+  // sits below it (slight overlap with the headline at the football's lower
+  // edge is intentional, reads as layered). Pure B&W fabric, zero CA.
+  { id: 'hero',                radius: 7.0, yaw: 0,                 pitch: 0,     ballPosX: 0, ballPosY: 0.6, ballPosZ: 0,   ballScale: 1.00, ballRotX: PROFILE_X,                ballRotY: PROFILE_Y,                ballRotZ: PROFILE_Z, lightLevel: 1.00, caAmount: 0.0000, fabricColor: COLOR_MONO },
+  // Approach — dolly in close. Still B&W; CA just barely on so the warmth
+  // is starting to register but the world hasn't taken on color yet.
+  { id: 'approach',            radius: 3.0, yaw: 0,                 pitch: 0,    ballPosX: 0, ballPosY: 0, ballPosZ: 0,   ballScale: 1.00, ballRotX: PROFILE_X,                ballRotY: PROFILE_Y,                ballRotZ: PROFILE_Z, lightLevel: 1.00, caAmount: 0.0008, fabricColor: COLOR_MONO },
+  // Investment Approach — editorial 3/4 reveal. CA climbing into the middle.
+  { id: 'investment-approach', radius: 4.0, yaw: 0,                 pitch: 0.05, ballPosX: 0, ballPosY: 0, ballPosZ: 0,   ballScale: 1.00, ballRotX: PROFILE_X,                ballRotY: PROFILE_Y,                ballRotZ: PROFILE_Z, lightLevel: 0.85, caAmount: 0.0030, fabricColor: COLOR_BLUE_MID },
+  // Demographics — pull back wide, slight high angle. CA approaches peak.
+  { id: 'demographics',        radius: 6.5, yaw: 0,                 pitch: 0.2,  ballPosX: 0, ballPosY: 0, ballPosZ: 0,   ballScale: 1.00, ballRotX: PROFILE_X,                ballRotY: PROFILE_Y,                ballRotZ: PROFILE_Z, lightLevel: 0.90, caAmount: 0.0055, fabricColor: COLOR_TEAL },
+  // Portfolio — peak CA — strongest fringing where the drama is densest.
+  // Spiral happens scrolling THROUGH this section (the +6π sits on Team).
+  { id: 'portfolio',           radius: 5.5, yaw: Math.PI * 0.25,    pitch: 0.05, ballPosX: 0, ballPosY: 0, ballPosZ: 0,   ballScale: 1.00, ballRotX: PROFILE_X,                ballRotY: PROFILE_Y,                ballRotZ: PROFILE_Z, lightLevel: 0.35, caAmount: 0.0075, fabricColor: COLOR_TEAL_DEEP },
+  // Team — the catch. CA still high through the moody mid section.
+  { id: 'team',                radius: 5.5, yaw: Math.PI * 0.45,    pitch: 0.15, ballPosX: 0, ballPosY: 0, ballPosZ: 0,   ballScale: 1.00, ballRotX: PROFILE_X + Math.PI * 6, ballRotY: PROFILE_Y,                ballRotZ: PROFILE_Z, lightLevel: 0.35, caAmount: 0.0065, fabricColor: COLOR_TEAL_DEEP },
+  // Track Record — front shot. CA easing down as we head toward the end.
+  { id: 'track-record',        radius: 5.0, yaw: 0,                 pitch: 0,    ballPosX: 0, ballPosY: 0, ballPosZ: 0,   ballScale: 1.00, ballRotX: PROFILE_X + Math.PI * 6, ballRotY: PROFILE_Y,                ballRotZ: PROFILE_Z, lightLevel: 1.00, caAmount: 0.0035, fabricColor: COLOR_TEAL },
+  // Connect — final flip. CA low so the finale reads clean and confident.
+  { id: 'connect',             radius: 5.0, yaw: 0,                 pitch: -0.05, ballPosX: 0, ballPosY: 0, ballPosZ: 0.3, ballScale: 1.10, ballRotX: PROFILE_X + Math.PI * 6,  ballRotY: PROFILE_Y + Math.PI * 2, ballRotZ: PROFILE_Z, lightLevel: 1.00, caAmount: 0.0010, fabricColor: COLOR_ELECTRIC },
+  // Footer — page closes in B&W just like it opened. Zero CA. Color fades
+  // back out as the user reaches the bottom.
+  { id: 'footer',              radius: 7.5, yaw: 0,                 pitch: 0.10,  ballPosX: 0, ballPosY: 0, ballPosZ: 0,   ballScale: 0.85, ballRotX: PROFILE_X + Math.PI * 6,  ballRotY: PROFILE_Y + Math.PI * 2, ballRotZ: PROFILE_Z, lightLevel: 0.75, caAmount: 0.0000, fabricColor: COLOR_MONO }
 ];
 
 function hexToColor(name: string, fallback: string): THREE.Color {
@@ -159,10 +168,16 @@ interface Pose {
   ballRotZ: number;
   lightLevel: number;
   caAmount: number;
+  fabricColor: THREE.Color;
 }
+
+// Shared color buffer — avoids allocating a new THREE.Color every onUpdate.
+const FABRIC_COLOR_BUFFER = new THREE.Color();
 
 function interpBeats(a: Beat, b: Beat, t: number): Pose {
   const e = smoothstep(t);
+  // Lerp the fabric color into the shared buffer, then clone for the pose.
+  FABRIC_COLOR_BUFFER.copy(a.fabricColor).lerp(b.fabricColor, e);
   return {
     radius: lerp(a.radius, b.radius, e),
     yaw: lerp(a.yaw, b.yaw, e),
@@ -175,7 +190,8 @@ function interpBeats(a: Beat, b: Beat, t: number): Pose {
     ballRotY: lerp(a.ballRotY, b.ballRotY, e),
     ballRotZ: lerp(a.ballRotZ, b.ballRotZ, e),
     lightLevel: lerp(a.lightLevel, b.lightLevel, e),
-    caAmount: lerp(a.caAmount, b.caAmount, e)
+    caAmount: lerp(a.caAmount, b.caAmount, e),
+    fabricColor: FABRIC_COLOR_BUFFER.clone()
   };
 }
 
@@ -188,9 +204,12 @@ function interpBeats(a: Beat, b: Beat, t: number): Pose {
 
 const FABRIC_VERT = /* glsl */ `
 uniform vec2 u_ballXY;
+uniform vec2 u_mouseXY;
+uniform float u_mouseInfluence;
 uniform float u_time;
 varying vec3 vWorldPos;
 varying float vPull;
+varying float vMousePull;
 varying vec2 vUv;
 
 void main() {
@@ -200,12 +219,16 @@ void main() {
   vec4 wp = modelMatrix * vec4(position, 1.0);
   vec3 worldPos = wp.xyz;
 
-  // Distance from this vertex to the football in the XY plane.
+  // Gaussian pull toward the football (existing behavior).
   vec2 toBall = u_ballXY - worldPos.xy;
-  float dist = length(toBall);
+  float ballDist = length(toBall);
+  float pull = 1.6 * exp(-ballDist * ballDist * 0.06);
 
-  // Gaussian pull — strong near the ball, decays quickly.
-  float pull = 1.6 * exp(-dist * dist * 0.06);
+  // Gaussian pull toward the cursor (new). u_mouseInfluence fades to 0
+  // when the cursor is offscreen / idle so the warp turns off cleanly.
+  vec2 toMouse = u_mouseXY - worldPos.xy;
+  float mouseDist = length(toMouse);
+  float mousePull = u_mouseInfluence * 1.4 * exp(-mouseDist * mouseDist * 0.05);
 
   // Ambient wave noise.
   float wave = (
@@ -214,11 +237,12 @@ void main() {
   ) * 0.16;
 
   // Ripple emanating from the football.
-  float ripple = sin(dist * 0.65 - u_time * 1.8) * 0.16 * exp(-dist * 0.10);
+  float ripple = sin(ballDist * 0.65 - u_time * 1.8) * 0.16 * exp(-ballDist * 0.10);
 
-  pos.z += pull + wave + ripple;
+  pos.z += pull + mousePull + wave + ripple;
 
   vPull = pull;
+  vMousePull = mousePull;
   vWorldPos = worldPos;
   vUv = uv;
 
@@ -228,6 +252,7 @@ void main() {
 const FABRIC_FRAG = /* glsl */ `
 varying vec3 vWorldPos;
 varying float vPull;
+varying float vMousePull;
 varying vec2 vUv;
 uniform vec3 u_color;
 uniform float u_brightness;
@@ -238,8 +263,8 @@ void main() {
   float dotDist = length(grid - 0.5);
   float dot = smoothstep(0.44, 0.40, dotDist);
 
-  // Brightness boosted by pull so the bulge area lights up.
-  float brightness = 0.10 + vPull * 0.55;
+  // Brightness boosted by ball pull AND mouse pull so both moments light up.
+  float brightness = 0.10 + vPull * 0.55 + vMousePull * 0.70;
 
   // Soft fade at the edges of the plane.
   float edgeX = smoothstep(0.0, 0.18, vUv.x) * smoothstep(1.0, 0.82, vUv.x);
@@ -247,7 +272,8 @@ void main() {
   float edge = edgeX * edgeY;
 
   // u_brightness — driven by the scroll-driven lightLevel so the fabric
-  // dims for moody sections and brightens back for the rest.
+  // dims for moody sections and brightens back for the rest. u_color is
+  // lerped per-beat so each section gets its own hue.
   gl_FragColor = vec4(u_color, dot * brightness * edge * u_brightness);
 }`;
 
@@ -263,7 +289,9 @@ function buildFabric(isMobile: boolean): { mesh: THREE.Mesh; material: THREE.Sha
     uniforms: {
       u_time: { value: 0 },
       u_ballXY: { value: new THREE.Vector2(0, 0) },
-      u_color: { value: hexToColor('--accent-teal', '#5AC8FA') },
+      u_mouseXY: { value: new THREE.Vector2(1000, 1000) },  // far off-plane initially
+      u_mouseInfluence: { value: 0 },
+      u_color: { value: hexToColor('--accent-teal', '#5AC8FA').clone() },
       u_brightness: { value: 1.0 }
     },
     transparent: true,
@@ -494,6 +522,31 @@ export function initHeroFootball(canvas: HTMLCanvasElement): HeroFootballHandle 
   const ro = new ResizeObserver(resize);
   ro.observe(canvas);
 
+  // === Mouse interaction ===
+  //
+  // Track cursor position, smooth it toward the target with lerp (momentum),
+  // and decay an "influence" scalar so the fabric warp gracefully fades out
+  // when the cursor goes idle or leaves the page. Mouse XY is mapped into
+  // the fabric's world XY range so the pull centers where the cursor is.
+  const mouseTarget = new THREE.Vector2(0, 0);
+  const mouseSmooth = new THREE.Vector2(0, 0);
+  let mouseInfluence = 0;
+
+  function onPointerMove(e: PointerEvent) {
+    const rect = canvas.getBoundingClientRect();
+    const uvX = (e.clientX - rect.left) / rect.width;
+    const uvY = 1 - (e.clientY - rect.top) / rect.height;
+    // Fabric plane is PlaneGeometry(48, 32) at z=-6, so world XY spans
+    // (-24, -16) to (24, 16). Map UV to that range.
+    mouseTarget.set((uvX - 0.5) * 48, (uvY - 0.5) * 32);
+    mouseInfluence = 1;
+  }
+  function onPointerLeave() {
+    mouseInfluence = 0;
+  }
+  window.addEventListener('pointermove', onPointerMove, { passive: true });
+  window.addEventListener('pointerleave', onPointerLeave);
+
   // Viewport-aware orientation + scale. Landscape = horizontal football at
   // standard radius. Portrait = football flipped vertical (rotated 90° in
   // screen plane via WORLD Z axis) + camera pulled closer so the football
@@ -516,7 +569,8 @@ export function initHeroFootball(canvas: HTMLCanvasElement): HeroFootballHandle 
     ballScale: BEATS[0].ballScale,
     ballRotX: BEATS[0].ballRotX, ballRotY: BEATS[0].ballRotY, ballRotZ: BEATS[0].ballRotZ,
     lightLevel: BEATS[0].lightLevel,
-    caAmount: BEATS[0].caAmount
+    caAmount: BEATS[0].caAmount,
+    fabricColor: BEATS[0].fabricColor.clone()
   };
 
   const scrollTriggers: ScrollTrigger[] = [];
@@ -552,6 +606,13 @@ export function initHeroFootball(canvas: HTMLCanvasElement): HeroFootballHandle 
     fabric.material.uniforms.u_time.value = elapsed.t;
     fabric.material.uniforms.u_ballXY.value.set(currentPose.ballPosX, currentPose.ballPosY);
     fabric.material.uniforms.u_brightness.value = currentPose.lightLevel;
+    // Per-beat fabric color — copies the interpolated color from currentPose.
+    fabric.material.uniforms.u_color.value.copy(currentPose.fabricColor);
+    // Mouse: ease smoothed position toward target, decay influence each frame.
+    mouseSmooth.lerp(mouseTarget, 0.12);
+    mouseInfluence *= 0.96;
+    fabric.material.uniforms.u_mouseXY.value.copy(mouseSmooth);
+    fabric.material.uniforms.u_mouseInfluence.value = mouseInfluence;
 
     // Slowly drift the football's alphaMap UV — surface pattern flows across.
     noiseTex.offset.x = (elapsed.t * 0.018) % 1;
@@ -653,6 +714,8 @@ export function initHeroFootball(canvas: HTMLCanvasElement): HeroFootballHandle 
       ro.disconnect();
       io.disconnect();
       window.removeEventListener('resize', updateOrientation);
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerleave', onPointerLeave);
       scrollTriggers.forEach((st) => st.kill());
       crystal.dispose();
       noiseTex.dispose();

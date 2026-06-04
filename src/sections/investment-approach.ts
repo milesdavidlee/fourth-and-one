@@ -1,6 +1,6 @@
 import './investment-approach.css';
-import { gsap, ScrollTrigger, easings, durations, onMotion } from '../lib/gsap';
-import { prepareWordReveal } from '../lib/reveal';
+import { ScrollTrigger, gsap, onMotion } from '../lib/gsap';
+import { scrollScrubWords } from '../lib/reveal';
 
 export function initInvestmentApproach(root: HTMLElement) {
   const headline = root.querySelector<HTMLElement>('.investment-approach__headline');
@@ -10,31 +10,18 @@ export function initInvestmentApproach(root: HTMLElement) {
 
   onMotion(({ conditions }) => {
     if (conditions?.reduced) {
-      gsap.set([paragraph], { clearProps: 'all' });
+      gsap.set([headline, paragraph], { opacity: 1, clearProps: 'all' });
       return;
     }
 
-    const reveal = prepareWordReveal(headline);
-    reveal.setInitial();
-    gsap.set(paragraph, { y: 16, opacity: 0 });
-
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        id: 'investment-approach-entrance',
-        trigger: root,
-        start: 'top 75%',
-        once: true,
-        invalidateOnRefresh: true
-      }
+    scrollScrubWords([headline, paragraph], root, {
+      id: 'investment-approach-scrub',
+      start: 'top 78%',
+      end: 'bottom 35%',
+      dimOpacity: 0.16,
+      stagger: 0.035,
+      scrub: 0.6
     });
-
-    tl.add(reveal.play());
-
-    tl.to(
-      paragraph,
-      { y: 0, opacity: 1, duration: durations.entrance, ease: easings.out },
-      '-=0.45'
-    );
   });
 
   requestAnimationFrame(() => ScrollTrigger.refresh());

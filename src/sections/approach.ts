@@ -1,47 +1,31 @@
 import './approach.css';
-import { gsap, ScrollTrigger, easings, durations, onMotion } from '../lib/gsap';
-import { prepareWordReveal } from '../lib/reveal';
+import { ScrollTrigger, gsap, onMotion } from '../lib/gsap';
+import { scrollScrubWords } from '../lib/reveal';
 
 export function initApproach(root: HTMLElement) {
   const headline = root.querySelector<HTMLElement>('.approach__headline');
   const lead = root.querySelector<HTMLElement>('.approach__lead');
   const paragraph = root.querySelector<HTMLElement>('.approach__paragraph');
 
-  if (!headline || !lead || !paragraph) return;
+  if (!headline) return;
+
+  const targets = [headline, lead, paragraph].filter(Boolean) as HTMLElement[];
 
   onMotion(({ conditions }) => {
     if (conditions?.reduced) {
-      gsap.set([lead, paragraph], { clearProps: 'all' });
+      // Reduced-motion: render full text at full opacity, no scrub.
+      gsap.set(targets, { opacity: 1, clearProps: 'all' });
       return;
     }
 
-    const reveal = prepareWordReveal(headline);
-    reveal.setInitial();
-    gsap.set([lead, paragraph], { y: 16, opacity: 0 });
-
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        id: 'approach-entrance',
-        trigger: root,
-        start: 'top 75%',
-        once: true,
-        invalidateOnRefresh: true
-      }
+    scrollScrubWords(targets, root, {
+      id: 'approach-scrub',
+      start: 'top 78%',
+      end: 'bottom 35%',
+      dimOpacity: 0.16,
+      stagger: 0.035,
+      scrub: 0.6
     });
-
-    tl.add(reveal.play());
-
-    tl.to(
-      lead,
-      { y: 0, opacity: 1, duration: durations.entrance, ease: easings.out },
-      '-=0.45'
-    );
-
-    tl.to(
-      paragraph,
-      { y: 0, opacity: 1, duration: durations.entrance, ease: easings.out },
-      '-=0.55'
-    );
   });
 
   requestAnimationFrame(() => ScrollTrigger.refresh());
