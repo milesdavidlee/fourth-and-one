@@ -30,12 +30,10 @@
         place-items: center;
         background: #020308;
       }
-      #loader .loader__wordmark {
-        font-size: 52px;
-        font-weight: 600;
-        letter-spacing: -0.032em;
-        color: #FFFFFF;
-        white-space: nowrap;
+      #loader .loader__logo {
+        width: clamp(220px, 32vw, 360px);
+        height: auto;
+        display: block;
       }
       /* The loader covers the page (z-index 1000) until it fades out, so
          <main> can render freely behind it from the start. No visibility
@@ -52,30 +50,46 @@
   </head>
   <body>
     <div id="loader" class="loader" aria-hidden="true" data-state="active">
-      <span class="loader__wordmark" role="img" aria-label="4th &amp; 1 Ventures">4th &amp; 1 Ventures</span>
+      <img class="loader__logo" src="/logos/4th-logo.svg" alt="4th &amp; 1 Ventures" width="320" height="120" />
     </div>
 
     <canvas id="football-canvas" class="football-canvas" aria-hidden="true"></canvas>
 
     <header id="nav" class="nav" aria-label="Primary">
       <div class="nav__inner">
-        <a class="nav__brand" href="#hero" aria-label="4th &amp; 1 Ventures — home">4th &amp; 1</a>
+        <a class="nav__brand" href="#hero" aria-label="4th &amp; 1 Ventures — home">
+          <img src="/logos/4th-logo.svg" alt="4th &amp; 1 Ventures" width="86" height="32" />
+        </a>
         <ul class="nav__links">
           <li><a class="nav__link" href="#approach">Approach</a></li>
           <li><a class="nav__link" href="#portfolio">Portfolio</a></li>
           <li><a class="nav__link" href="#team">Team</a></li>
           <li><a class="nav__link" href="#connect">Connect</a></li>
         </ul>
+        <button type="button" class="nav__toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-overlay">
+          <span class="nav__toggle-bar"></span>
+          <span class="nav__toggle-bar"></span>
+        </button>
       </div>
     </header>
+
+    <!-- Mobile menu overlay MUST live outside .nav — .nav has transform on it,
+         which makes any fixed descendant use the nav as its containing block
+         (clipping it to the 70px-tall nav bar). At body root, inset:0 = viewport. -->
+    <nav id="nav-overlay" class="nav__overlay" aria-hidden="true" aria-label="Mobile">
+      <ul class="nav__overlay-links">
+        <li><a class="nav__overlay-link" href="#approach">Approach</a></li>
+        <li><a class="nav__overlay-link" href="#portfolio">Portfolio</a></li>
+        <li><a class="nav__overlay-link" href="#team">Team</a></li>
+        <li><a class="nav__overlay-link" href="#connect">Connect</a></li>
+      </ul>
+    </nav>
 
     <main id="app">
       <section id="hero" class="hero" aria-labelledby="hero-tagline">
 
         <div class="hero__inner">
           <span class="hero__mark" aria-hidden="true">
-            <span class="hero__mark-dot"></span>
-            <span class="hero__mark-rule"></span>
             <span class="hero__mark-label">Capital for the extra inches</span>
           </span>
 
@@ -88,20 +102,6 @@
             <span class="icon" aria-hidden="true">arrow_forward</span>
           </a>
 
-          <aside class="hero__stats" aria-label="At a glance">
-            <div class="hero__stat">
-              <span class="hero__stat-numeral">100<span class="hero__stat-suffix">+</span></span>
-              <span class="hero__stat-label">Pro Athletes</span>
-            </div>
-            <div class="hero__stat">
-              <span class="hero__stat-numeral">20<span class="hero__stat-suffix">+</span></span>
-              <span class="hero__stat-label">US States</span>
-            </div>
-            <div class="hero__stat">
-              <span class="hero__stat-numeral">5</span>
-              <span class="hero__stat-label">Pro Sports</span>
-            </div>
-          </aside>
         </div>
       </section>
 
@@ -475,7 +475,7 @@
             <p class="track-record__detail">Active across consumer brands and consumer tech, seed through Series B.</p>
           </div>
           <div class="track-record__stat card-surface">
-            <span class="track-record__numeral" data-count="23">23</span>
+            <span class="track-record__numeral" data-count="8">8</span>
             <span class="track-record__label">Investments</span>
             <p class="track-record__detail">Total positions taken since inception.</p>
           </div>
@@ -498,7 +498,7 @@
       <footer id="footer" class="footer" aria-label="Site footer">
         <div class="footer__inner">
           <div class="footer__brand">
-            <span class="footer__mark">4th &amp; 1 Ventures</span>
+            <img class="footer__mark" src="/logos/4th-logo.svg" alt="4th &amp; 1 Ventures" width="120" height="45" />
             <span class="footer__tagline">Venture powered by athlete access.</span>
           </div>
           <div class="footer__newsletter">

@@ -20,12 +20,9 @@
 }
 
 .footer__mark {
-  font-family: var(--font-display);
-  font-size: var(--type-display-s-size);
-  line-height: var(--type-display-s-lh);
-  letter-spacing: var(--type-display-s-tracking);
-  font-weight: var(--type-display-s-weight);
-  color: var(--accent);
+  width: auto;
+  height: 40px;
+  display: block;
 }
 
 .footer__tagline {
@@ -206,8 +203,7 @@
   }
   .footer__inner { gap: var(--space-32); }
   .footer__mark {
-    font-size: var(--type-headline-size);
-    line-height: var(--type-headline-lh);
+    height: 32px;
   }
   .footer__newsletter-input {
     font-size: var(--type-body-s-size);

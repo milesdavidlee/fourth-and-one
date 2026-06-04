@@ -176,15 +176,19 @@ button {
   .cta { animation: none; }
 }
 
-/* Unified surface card — transparent. Just a thin border defines the
-   container; content reads directly over the football scene. */
+/* Unified surface card — frosted glass over the football scene. Enough bg
+   opacity + backdrop blur that text inside reads cleanly without the
+   football competing through. */
 .card-surface {
   position: relative;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(8, 12, 20, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.10);
   border-radius: var(--radius-l);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
   transition:
     border-color var(--dur-base) ease,
+    background var(--dur-base) ease,
     transform var(--dur-fast) ease;
 }
 
@@ -193,6 +197,7 @@ button {
 @media (hover: hover) and (pointer: fine) {
   .card-surface:hover {
     border-color: rgba(255, 255, 255, 0.28);
+    background: rgba(12, 18, 30, 0.55);
     transform: translateY(-2px);
   }
 }

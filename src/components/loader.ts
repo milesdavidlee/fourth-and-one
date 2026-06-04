@@ -8,7 +8,7 @@ export function initLoader(): Promise<void> {
   const overlay = document.getElementById('loader');
   if (!overlay) return Promise.resolve();
 
-  const wordmark = overlay.querySelector<HTMLElement>('.loader__wordmark');
+  const wordmark = overlay.querySelector<HTMLElement>('.loader__logo');
   if (!wordmark) return Promise.resolve();
 
   // Register --mask-pos as a custom property so it can be tweened smoothly.

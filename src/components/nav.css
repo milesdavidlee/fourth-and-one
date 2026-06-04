@@ -21,10 +21,21 @@
   transform: translateY(-110%);
 }
 
+/* Floating glass — almost clear, lets the page show through with a
+   strong frost. Reads as "thing in front of the scene" not "panel on top". */
 .nav[data-scrolled='true'] {
-  background: rgba(10, 10, 11, 0.72);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  background: rgba(10, 10, 11, 0.18);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+}
+
+/* When the menu is open, keep the nav transparent (the overlay is its own
+   surface) but make sure the bar itself stays visible above the overlay. */
+.nav[data-menu-open='true'] {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transform: translateY(0) !important;
 }
 
 .nav__inner {
@@ -34,19 +45,22 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-32);
+  position: relative;
+  z-index: 2;
 }
 
 .nav__brand {
-  font-family: var(--font-display);
-  font-size: var(--type-headline-size);
-  line-height: var(--type-headline-lh);
-  letter-spacing: var(--type-headline-tracking);
-  font-weight: var(--type-headline-weight);
-  background: var(--accent-gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.nav__brand img {
+  height: 32px;
+  width: auto;
+  display: block;
 }
 
 .nav__links {
@@ -70,20 +84,106 @@
   color: var(--text-primary);
 }
 
+/* === Mobile hamburger — hidden on desktop, visible ≤768px === */
+.nav__toggle {
+  display: none;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.nav__toggle-bar {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  height: 2px;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transition: transform var(--dur-base) ease, opacity var(--dur-base) ease;
+  transform-origin: center;
+}
+
+.nav__toggle-bar:nth-child(1) { top: 16px; }
+.nav__toggle-bar:nth-child(2) { bottom: 16px; }
+
+.nav[data-menu-open='true'] .nav__toggle-bar:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+.nav[data-menu-open='true'] .nav__toggle-bar:nth-child(2) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* === Full-screen mobile overlay — body-level sibling of .nav (not inside it,
+   because .nav has a transform that would clip fixed children). z-index
+   sits just under the nav bar so the X button stays tappable on top. === */
+.nav__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-nav) - 1);
+  background: #020308;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  padding: var(--space-160) var(--space-32) var(--space-80);
+}
+
+/* State is driven by an attribute on the overlay itself now, since it's no
+   longer a descendant of .nav. nav.ts toggles both .nav[data-menu-open]
+   and .nav__overlay[data-open] in lockstep. */
+.nav__overlay[data-open='true'] {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.nav__overlay-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-40);
+  text-align: center;
+}
+
+.nav__overlay-link {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: clamp(40px, 11vw, 72px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+  color: var(--text-primary);
+  transition: color var(--dur-fast) ease, transform var(--dur-fast) ease;
+}
+
+.nav__overlay-link:hover,
+.nav__overlay-link:active {
+  color: var(--accent-teal);
+}
+
+/* Tablet + smaller — hide desktop links, show hamburger. */
 @media (max-width: 768px) {
   .nav {
     padding: var(--space-12) var(--space-24);
   }
   .nav__links {
-    gap: var(--space-20);
+    display: none;
   }
-  .nav__brand {
-    font-size: var(--type-title-size);
-    line-height: var(--type-title-lh);
+  .nav__toggle {
+    display: inline-block;
+  }
+  .nav__brand img {
+    height: 26px;
   }
 }
 
-/* Small phones — tighten everything so brand + 4 links fit at 360-414px. */
+/* Small phones */
 @media (max-width: 480px) {
   .nav {
     padding: var(--space-12) var(--space-16);
@@ -91,14 +191,18 @@
   .nav__inner {
     gap: var(--space-16);
   }
-  .nav__brand {
-    font-size: var(--type-body-l-size);
-    line-height: 1;
+  .nav__brand img {
+    height: 22px;
   }
-  .nav__links {
-    gap: var(--space-12);
+}
+
+/* Desktop ≥ 769px — overlay never shows even if state class lingers. */
+@media (min-width: 769px) {
+  .nav__overlay {
+    display: none !important;
   }
-  .nav__link {
-    font-size: var(--type-body-s-size);
-  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav__overlay { transition: none; }
 }

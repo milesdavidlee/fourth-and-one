@@ -549,15 +549,16 @@ export function initHeroFootball(canvas: HTMLCanvasElement): HeroFootballHandle 
 
   // Viewport-aware orientation + scale. Landscape = horizontal football at
   // standard radius. Portrait = football flipped vertical (rotated 90° in
-  // screen plane via WORLD Z axis) + camera pulled closer so the football
-  // actually fills the narrower viewport.
+  // screen plane via WORLD Z axis) + camera pushed BACK so the ball reads
+  // smaller — leaves room for the hero text to feel like a proper hero.
+  // Applied to every beat, not just the hero.
   let portraitZ = 0;
   let radiusScale = 1;
   const WORLD_Z = new THREE.Vector3(0, 0, 1);
   function updateOrientation() {
     const isPortrait = window.innerHeight > window.innerWidth;
     portraitZ = isPortrait ? PORTRAIT_Z_OFFSET : 0;
-    radiusScale = isPortrait ? 0.65 : 1;
+    radiusScale = isPortrait ? 1.35 : 1;
   }
   updateOrientation();
   window.addEventListener('resize', updateOrientation);

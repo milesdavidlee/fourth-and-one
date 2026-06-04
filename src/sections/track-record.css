@@ -32,28 +32,10 @@
   line-height: var(--type-display-l-lh);
   letter-spacing: var(--type-display-l-tracking);
   font-weight: var(--type-display-l-weight);
-  background: var(--accent-gradient-electric);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
+  color: var(--text-primary);
   font-feature-settings: 'tnum';
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
-}
-
-.track-record__digit {
-  display: inline-block;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  transform-origin: 50% 50%;
-}
-
-.track-record__digit > span {
-  display: inline-block;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  transform-origin: 50% 50%;
 }
 
 .track-record__label {
